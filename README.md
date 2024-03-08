@@ -14,7 +14,7 @@ Read this before **COMMITTING** anything: [Conventional Commits](https://www.con
 
 ## How-To Resources
 
-Stuck on something? Unity provides a vast library of "How-To" guides to help you: [https://learn.unity.com/](https://learn.unity.com/)
+Stuck on something? Unity provides a vast library of "How-To" guides to help you: [https://unity.com/how-to](https://unity.com/how-to)
 
 ## Getting Started with Unity
 
