@@ -2,7 +2,7 @@
 
 This file provides information about this Unity project.
 
-**Unity Version:** 2022.3.20f1
+**Unity Version:** 2022.3.21f1
 
 ## Version Control & Project Organization
 
