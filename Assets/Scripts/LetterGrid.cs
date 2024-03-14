@@ -11,7 +11,7 @@ public class LetterGrid : MonoBehaviour
     [SerializeField] private GameObject letterTilePrefab;
     [SerializeField] private int gridSize = 4;
 
-    private static LetterGrid _instance;
+    private static LetterGrid instance;
 
     private List<GameObject> letterTiles;
     private List<GameObject> selectedTiles;
@@ -39,28 +39,28 @@ public class LetterGrid : MonoBehaviour
     {
         get
         {
-            if (_instance == null)
+            if (instance == null)
             {
-                _instance = FindObjectOfType<LetterGrid>();
-                if (_instance == null)
+                instance = FindObjectOfType<LetterGrid>();
+                if (instance == null)
                 {
                     Debug.LogError("No LetterGrid found in scene. Creating instance.");
-                    _instance = new LetterGrid();
+                    instance = new LetterGrid();
                 }
             }
-            return _instance;
+            return instance;
         }
     }
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (instance != null && instance != this)
         {
             DestroyImmediate(gameObject); // Destroy duplicate if it exists
             return;
         }
 
-        _instance = this;
+        instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scenes (optional)
     }
 
@@ -99,37 +99,6 @@ public class LetterGrid : MonoBehaviour
                     }
                 }
             }
-            
-
-            /*
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Starting point of the raycast
-            Vector2 direction = Vector2.up; // Direction of the raycast (normalized for accuracy)
-            float distance = Mathf.Infinity; // Maximum distance the ray can travel
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, direction, distance);
-
-            Debug.Log("Mouse position: " + mousePosition);
-            Debug.Log(hit.collider);
-
-            if (hit.collider != null)
-            {
-                GameObject hitObject = hit.collider.gameObject;
-
-                if (hitObject.CompareTag("LetterTile"))
-                {
-                    // Raycast hit something!
-
-                    Debug.Log("Hit object: " + hit.collider.gameObject.name);
-                    // Access other information about the hit object from hit (e.g., hit point, normal)
-                }
-                else
-                {
-                    // Raycast didn't hit anything
-                    Debug.Log("No collision detected");
-                }
-            }
-            */
-
-
         }
     }
 
@@ -195,7 +164,6 @@ public class LetterGrid : MonoBehaviour
             else { return 0; }
         }
         else return 0;
-
     }
 
     bool IsTileSelected(GameObject tile)
@@ -207,7 +175,7 @@ public class LetterGrid : MonoBehaviour
     {
         int tileIndex = selectedTiles.IndexOf(tile);
         selectedTiles.Remove(tile);
-        Debug.Log("Removed: " + tile.name);
+        // Debug.Log("Removed: " + tile.name);
 
         // Move tile back to its original position in the grid (same logic as before)
         if (originalTilePositions.ContainsKey(tile))
@@ -250,7 +218,7 @@ public class LetterGrid : MonoBehaviour
     void SelectTile(GameObject tile)
     {
         selectedTiles.Add(tile);
-        Debug.Log("Added: " + tile.name);
+        // Debug.Log("Added: " + tile.name);
 
         // Move tile to the selected container
         tile.transform.SetParent(selectedContainer.transform);
@@ -299,12 +267,12 @@ public class LetterGrid : MonoBehaviour
             }
             else
             {
-                Debug.Log("Invalid word: " + selectedWord);
+                // Debug.Log("Invalid word: " + selectedWord);
             }
         }
         else
         {
-            Debug.Log("Nothing has been selected");
+            // Debug.Log("Nothing has been selected");
         }
 
     }

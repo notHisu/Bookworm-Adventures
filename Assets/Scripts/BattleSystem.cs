@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-enum TURNS { PlayerTurn, EnemyTurn }
+public enum TURNS {Start, PlayerTurn, EnemyTurn, Victory, Lost }
 
 public class BattleSystem : MonoBehaviour
 {
-    private static BattleSystem _instance;
+    private static BattleSystem instance;
 
     private Dictionary<int, double> damageValues = new Dictionary<int, double>()
     {
@@ -15,33 +16,50 @@ public class BattleSystem : MonoBehaviour
         {12, 6.75}, {13, 8}, {14, 9.5}, {15, 11}, {16, 13}
     };
 
+    [SerializeField]
+    private TURNS turn;
+
+    // Public Variables
+    public TMP_Text turnTextIndicator;
+
     public static BattleSystem Instance
     {
         get
         {
-            if (_instance == null)
+            if (instance == null)
             {
-                _instance = FindObjectOfType<BattleSystem>();
-                if (_instance == null)
+                instance = FindObjectOfType<BattleSystem>();
+                if (instance == null)
                 {
                     Debug.LogError("No BattleSystem found in scene. Creating instance.");
-                    _instance = new BattleSystem();
+                    instance = new BattleSystem();
                 }
             }
-            return _instance;
+            return instance;
         }
     }
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (instance != null && instance != this)
         {
             DestroyImmediate(gameObject); // Destroy duplicate if it exists
             return;
         }
 
-        _instance = this;
+        instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scenes (optional)
+    }
+
+    private void Start()
+    {
+         turn = TURNS.Start;
+        UpdateTurnIndicator();
+    }
+
+    void UpdateTurnIndicator()
+    {
+        turnTextIndicator.text = turn.ToString();
     }
 
     double GetWordDamage()
@@ -60,17 +78,22 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAttackButton()
     {
-        Debug.Log("Is valid: " + WordChecker.Instance.isValid);
-        if (WordChecker.Instance.isValid)
+        if (turn == TURNS.PlayerTurn)
         {
             Debug.Log("Word damage: " + GetWordDamage());
-            // LetterGrid.Instance.ResetSelectedTiles();
+            LetterGrid.Instance.ResetSelectedTiles();
         }
+        else return;
     }
 
     public void OnScrambleButton()
     {
-        LetterGrid.Instance.ScrambleLetter();
+        if (turn == TURNS.PlayerTurn)
+        {
+            Debug.Log("Scrambleee!");
+            LetterGrid.Instance.ScrambleLetter();
+        }
+        else return;
     }
 
 }

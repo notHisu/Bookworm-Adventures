@@ -3,37 +3,35 @@ using UnityEngine;
 
 public class WordChecker : MonoBehaviour
 {
-    private static WordChecker _instance;
+    private static WordChecker instance;
     private HashSet<string> validWords;
-
-    public bool isValid = false;
 
     public static WordChecker Instance
     {
         get
         {
-            if (_instance == null)
+            if (instance == null)
             {
-                _instance = FindObjectOfType<WordChecker>();
-                if (_instance == null)
+                instance = FindObjectOfType<WordChecker>();
+                if (instance == null)
                 {
                     Debug.LogError("No WordChecker found in scene. Creating instance.");
-                    _instance = new WordChecker();
+                    instance = new WordChecker();
                 }
             }
-            return _instance;
+            return instance;
         }
     }
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (instance != null && instance != this)
         {
             DestroyImmediate(gameObject); // Destroy duplicate if it exists
             return;
         }
 
-        _instance = this;
+        instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scenes (optional)
         LoadDictionary();
     }
@@ -48,7 +46,7 @@ public class WordChecker : MonoBehaviour
         }
         else
         {
-            // Debug.Log("Something");
+            Debug.Log("Dictionary Loaded.");
             string[] words = wordFile.text.Split('\n');
             foreach (string word in words)
             {
@@ -67,8 +65,4 @@ public class WordChecker : MonoBehaviour
         else return false;
     }
 
-    private void SetIsValid()
-    {
-        isValid = !isValid;
-    }
 }
