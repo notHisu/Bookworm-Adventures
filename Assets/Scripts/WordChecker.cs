@@ -6,6 +6,8 @@ public class WordChecker : MonoBehaviour
     private static WordChecker _instance;
     private HashSet<string> validWords;
 
+    public bool isValid = false;
+
     public static WordChecker Instance
     {
         get
@@ -46,18 +48,27 @@ public class WordChecker : MonoBehaviour
         }
         else
         {
-            Debug.Log("Something");
+            // Debug.Log("Something");
             string[] words = wordFile.text.Split('\n');
             foreach (string word in words)
             {
                 validWords.Add(word.Trim().ToLower());
             }
         }
-        Debug.Log("Count: " + validWords.Count);
+        // Debug.Log("Count: " + validWords.Count);
     }
 
     public bool IsValidWord(string word)
     {
-        return validWords.Contains(word.ToLower());
+        if (word.Length > 2)
+        {
+            return validWords.Contains(word.ToLower());
+        }
+        else return false;
+    }
+
+    private void SetIsValid()
+    {
+        isValid = !isValid;
     }
 }

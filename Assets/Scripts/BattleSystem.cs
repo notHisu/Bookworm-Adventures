@@ -60,7 +60,12 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAttackButton()
     {
-        Debug.Log("Word damage: " + GetWordDamage());
+        Debug.Log("Is valid: " + WordChecker.Instance.isValid);
+        if (WordChecker.Instance.isValid)
+        {
+            Debug.Log("Word damage: " + GetWordDamage());
+            // LetterGrid.Instance.ResetSelectedTiles();
+        }
     }
 
     public void OnScrambleButton()

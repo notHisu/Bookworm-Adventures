@@ -79,6 +79,7 @@ public class LetterGrid : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -87,7 +88,7 @@ public class LetterGrid : MonoBehaviour
                 GameObject hitObject = hit.collider.gameObject;
                 if (hitObject.CompareTag("LetterTile"))
                 {
-                    //Debug.Log("Hit something");
+                    // Debug.Log("Hit something");
                     if (IsTileSelected(hitObject))
                     {
                         DeselectTile(hitObject);
@@ -98,6 +99,37 @@ public class LetterGrid : MonoBehaviour
                     }
                 }
             }
+            
+
+            /*
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Starting point of the raycast
+            Vector2 direction = Vector2.up; // Direction of the raycast (normalized for accuracy)
+            float distance = Mathf.Infinity; // Maximum distance the ray can travel
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, direction, distance);
+
+            Debug.Log("Mouse position: " + mousePosition);
+            Debug.Log(hit.collider);
+
+            if (hit.collider != null)
+            {
+                GameObject hitObject = hit.collider.gameObject;
+
+                if (hitObject.CompareTag("LetterTile"))
+                {
+                    // Raycast hit something!
+
+                    Debug.Log("Hit object: " + hit.collider.gameObject.name);
+                    // Access other information about the hit object from hit (e.g., hit point, normal)
+                }
+                else
+                {
+                    // Raycast didn't hit anything
+                    Debug.Log("No collision detected");
+                }
+            }
+            */
+
+
         }
     }
 
@@ -293,5 +325,17 @@ public class LetterGrid : MonoBehaviour
         }
     }
 
+    public void ResetSelectedTiles()
+    {
+        if (selectedTiles.Count != 0)
+        {
+            foreach (GameObject tile in selectedTiles)
+            {
+                tile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
+                tile.name = tile.GetComponentInChildren<TMP_Text>().text;
+            }
+            DeselectTile(selectedTiles[0]);
+        }
+    }
 
 }
