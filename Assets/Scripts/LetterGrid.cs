@@ -10,7 +10,7 @@ public class LetterGrid : MonoBehaviour
 {
     [SerializeField] private GameObject letterTilePrefab;
     [SerializeField] private int gridSize = 4;
-
+    [SerializeField] private float space = .15f;
     private static LetterGrid instance;
 
     private List<GameObject> letterTiles;
@@ -104,15 +104,18 @@ public class LetterGrid : MonoBehaviour
 
     void GenerateLetterGrid()
     {
+        float rowSpace = -0.6f;
         for (int row = 0; row < gridSize; row++)
         {
+            rowSpace = rowSpace + .15f;
             for (int col = 0; col < gridSize; col++)
             {
                 GameObject newTile = Instantiate(letterTilePrefab, transform.position, Quaternion.identity);
                 letterTiles.Add(newTile);
                 newTile.transform.SetParent(transform);
                 newTile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
-                newTile.transform.localPosition = new Vector3(col, row, 0);
+                newTile.transform.localPosition = new Vector3(col+col*.15f, row+rowSpace, 0);
+                Debug.Log($"x{newTile.transform.localPosition.x} y: x{newTile.transform.localPosition.y}");
                 newTile.name = newTile.GetComponentInChildren<TMP_Text>().text;
             }
         }
