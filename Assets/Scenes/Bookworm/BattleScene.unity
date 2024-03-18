@@ -347,7 +347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &345172161
 Transform:
   m_ObjectHideFlags: 0
@@ -356,12 +356,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 345172160}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.238, y: -0.746, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.738, y: 1.254, z: 0}
   m_LocalScale: {x: 2.312317, y: 2.312317, z: 2.312317}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1953213598}
+  m_Father: {fileID: 1255569355}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &345172162
 SpriteRenderer:
@@ -2426,6 +2426,7 @@ MonoBehaviour:
   letterTilePrefab: {fileID: 4669047319945093400, guid: 79acde66f6a534e34be85ca71e75812f, type: 3}
   gridSize: 4
   space: 0.15
+  backgroundImage: {fileID: 345172160}
 --- !u!4 &1255569355
 Transform:
   m_ObjectHideFlags: 0
@@ -2438,7 +2439,8 @@ Transform:
   m_LocalPosition: {x: -1.5, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 345172161}
   m_Father: {fileID: 1953213598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1339206694
@@ -3406,7 +3408,6 @@ Transform:
   - {fileID: 763769789}
   - {fileID: 1255569355}
   - {fileID: 542552572}
-  - {fileID: 345172161}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1994880275
