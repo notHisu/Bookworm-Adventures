@@ -5,12 +5,14 @@ using TMPro;
 using System;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 
 public class LetterGrid : MonoBehaviour
 {
     [SerializeField] private GameObject letterTilePrefab;
     [SerializeField] private int gridSize = 4;
     [SerializeField] private float space = .15f;
+    [SerializeField] private GameObject backgroundImage;
     private static LetterGrid instance;
 
     private List<GameObject> letterTiles;
@@ -71,6 +73,7 @@ public class LetterGrid : MonoBehaviour
         selectedTiles = new List<GameObject>();
         originalTilePositions = new Dictionary<GameObject, Vector3>();
         selectedContainer = GameObject.Find("SelectedContainer");
+        backgroundImage.SetActive(true);
         mainCamera = Camera.main;
         GenerateLetterGrid();
     }
