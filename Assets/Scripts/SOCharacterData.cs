@@ -14,6 +14,11 @@ public class SOCharacterData : ScriptableObject
     public CHARACTER_TYPE characterType;
     public string characterDescription;
     // public Sprite characterSprite;
+    public int health;
+    public int maxHealth;
+
+    // For enemy only, 0 if is player
+    public int attackDamage; 
 
     public GameObject characterPrefab;
 

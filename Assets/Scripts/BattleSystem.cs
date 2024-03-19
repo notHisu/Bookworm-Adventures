@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public enum TURNS {Start, PlayerTurn, EnemyTurn, Victory, Lost }
+public enum TURNS {Start, PlayerTurn, Processing, EnemyTurn, Victory, Lost }
 
 public class BattleSystem : MonoBehaviour
 {
@@ -19,8 +18,11 @@ public class BattleSystem : MonoBehaviour
     [SerializeField]
     private TURNS turn;
 
-    // Public Variables
-    public TMP_Text turnTextIndicator;
+    [SerializeField]
+    private BattleUIManager battleUIManager;
+
+    private GameObject player;
+    private GameObject enemy;
 
     public static BattleSystem Instance
     {
@@ -54,12 +56,8 @@ public class BattleSystem : MonoBehaviour
     private void Start()
     {
          turn = TURNS.Start;
-        UpdateTurnIndicator();
-    }
-
-    void UpdateTurnIndicator()
-    {
-        turnTextIndicator.text = turn.ToString();
+        battleUIManager.UpdateTurnIndicator(turn.ToString());
+        battleUIManager.SetUpCharacterInfo();
     }
 
     double GetWordDamage()

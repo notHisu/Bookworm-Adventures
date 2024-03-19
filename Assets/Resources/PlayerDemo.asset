@@ -15,4 +15,7 @@ MonoBehaviour:
   characterName: Player
   characterType: 0
   characterDescription: Demo prefab for player
+  health: 5
+  maxHealth: 5
+  attackDamage: 0
   characterPrefab: {fileID: 1976800198410113586, guid: 72a950eedf5e16247b7fd3834941345b, type: 3}

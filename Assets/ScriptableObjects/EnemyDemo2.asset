@@ -15,4 +15,7 @@ MonoBehaviour:
   characterName: Enemy 2
   characterType: 1
   characterDescription: Demo prefab for enemy 2
+  health: 6
+  maxHealth: 6
+  attackDamage: 1
   characterPrefab: {fileID: 3011773652253665036, guid: a02db7ab1b75cf14c85129c43df331fe, type: 3}
