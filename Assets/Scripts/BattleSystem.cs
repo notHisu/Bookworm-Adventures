@@ -21,8 +21,11 @@ public class BattleSystem : MonoBehaviour
     [SerializeField]
     private BattleUIManager battleUIManager;
 
-    private GameObject player;
-    private GameObject enemy;
+    private GameObject playerObject;
+    private GameObject enemyObject;
+
+    private Player player;
+    private Enemy enemy;
 
     public static BattleSystem Instance
     {
@@ -55,9 +58,35 @@ public class BattleSystem : MonoBehaviour
 
     private void Start()
     {
-         turn = TURNS.Start;
+        turn = TURNS.Start;
         battleUIManager.UpdateTurnIndicator(turn.ToString());
         battleUIManager.SetUpCharacterInfo();
+
+        playerObject = GameObject.FindWithTag("Player");
+        enemyObject = GameObject.FindWithTag("Enemy");
+
+        if( playerObject != null)
+        {
+            player = playerObject.GetComponent<Player>();
+        }
+        else
+        {
+            Debug.Log("Can't find player in the current scene");
+        }
+
+        if (enemyObject != null)
+        {
+            enemy = enemyObject.GetComponent<Enemy>();
+
+        }
+        else
+        {
+            Debug.Log("No enemy in the current scene");
+        }
+
+        turn = TURNS.PlayerTurn;
+        battleUIManager.UpdateTurnIndicator(turn.ToString());
+
     }
 
     double GetWordDamage()
@@ -79,6 +108,15 @@ public class BattleSystem : MonoBehaviour
         if (turn == TURNS.PlayerTurn)
         {
             Debug.Log("Word damage: " + GetWordDamage());
+
+            enemy.TakeDamage(GetWordDamage());
+
+            battleUIManager.UpdateCharacterHUD();
+
+            turn = TURNS.EnemyTurn;
+            battleUIManager.UpdateTurnIndicator(turn.ToString());
+            StartCoroutine(EnemyTurn());
+
             LetterGrid.Instance.ResetSelectedTiles();
         }
         else return;
@@ -92,6 +130,15 @@ public class BattleSystem : MonoBehaviour
             LetterGrid.Instance.ScrambleLetter();
         }
         else return;
+    }
+
+    IEnumerator EnemyTurn()
+    {
+        player.TakeDamage(enemy.SendDamage());
+
+        battleUIManager.UpdateCharacterHUD();
+
+        yield return new WaitForSeconds(1f);
     }
 
 }

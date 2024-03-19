@@ -7,6 +7,6 @@ public class SOLevelData : ScriptableObject
 {
     public string levelName;
     public string levelDescription;
-    public List<ScriptableObject> enemyScriptableObjects;
+    public List<SOCharacterData> enemyScriptableObjects;
 
 }

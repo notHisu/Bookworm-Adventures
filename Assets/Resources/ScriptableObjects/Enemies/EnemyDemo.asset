@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9781874d169354149adc2c6727c8d57d, type: 3}
-  m_Name: PlayerDemo
+  m_Name: EnemyDemo
   m_EditorClassIdentifier: 
-  characterName: Player
-  characterType: 0
-  characterDescription: Demo prefab for player
+  characterName: Enemy1
+  characterType: 1
+  characterDescription: Demo prefab for enemy
   health: 5
   maxHealth: 5
-  attackDamage: 0
-  characterPrefab: {fileID: 1976800198410113586, guid: 72a950eedf5e16247b7fd3834941345b, type: 3}
+  attackDamage: 2
+  characterPrefab: {fileID: 3011773652253665036, guid: 3f62bc2cde12c6b4b88d613a70a90db9, type: 3}

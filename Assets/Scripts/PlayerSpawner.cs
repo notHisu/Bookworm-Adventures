@@ -14,11 +14,14 @@ public class PlayerSpawner : MonoBehaviour
 
     void CreatePlayer()
     {
-        playerData = Object.Instantiate(Resources.Load("PlayerDemo")) as SOCharacterData;
+        playerData = Object.Instantiate(Resources.Load("ScriptableObjects/PlayerDemo")) as SOCharacterData;
         player = GameObject.Instantiate(playerData.characterPrefab) as GameObject;
 
         player.transform.SetParent(this.transform);
         player.name = "Player";
+
+        player.GetComponent<ICharacterTemplate>().CharacterStats(playerData);
+
     }
-  
+
 }

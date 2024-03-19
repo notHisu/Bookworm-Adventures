@@ -4,7 +4,9 @@ using UnityEngine;
 
 public interface ICharacterTemplate 
 {
-    int SendDamage();
-    void TakeDamage(int incomingDamage);
+    double SendDamage();
+    void TakeDamage(double incomingDamage);
     void CharacterStats(SOCharacterData characterData);
+    void Die();
+
 }

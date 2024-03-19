@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, ICharacterTemplate
+public class Enemy : MonoBehaviour, ICharacterTemplate
 {
-    private string playerName;
+    private string enemyName;
     private double maxHealth;
     private double health;
+    private double attackDamage;
 
     public string GetName()
     {
-        return playerName;
+        return enemyName;
     }
 
     public double GetMaxHealth()
@@ -23,29 +24,30 @@ public class Player : MonoBehaviour, ICharacterTemplate
         return health;
     }
 
+
     public void CharacterStats(SOCharacterData characterData)
     {
-        playerName = characterData.characterName;
+        enemyName = characterData.characterName;
         health = characterData.health;
         maxHealth = characterData.maxHealth;
+        attackDamage = characterData.attackDamage;
     }
 
     public double SendDamage()
     {
-        return 0;
+        return attackDamage;
     }
-
 
     public void TakeDamage(double incomingDamage)
     {
-        
         health -= incomingDamage;
-        Debug.Log("Player current health: " + health);
+        Debug.Log("Enemy crrent health: " + health);
+
     }
 
     public void Die()
     {
-        if (health <= 0)
+        if(health <= 0)
         {
             Debug.Log("Nothing happened");
         }
