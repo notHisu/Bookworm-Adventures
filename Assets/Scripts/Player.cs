@@ -47,7 +47,7 @@ public class Player : MonoBehaviour, ICharacterTemplate
     {
         if (health <= 0)
         {
-            Debug.Log("Nothing happened");
+            Destroy(this.gameObject);
         }
     }
 }

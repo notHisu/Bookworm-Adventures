@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TURNS {Start, PlayerTurn, Processing, EnemyTurn, Victory, Lost }
+public enum TURNS {Start, PlayerTurn, Processing, EnemyTurn, Victory, Defeated }
 
 public class BattleSystem : MonoBehaviour
 {
@@ -19,8 +19,12 @@ public class BattleSystem : MonoBehaviour
     private TURNS turn;
 
     [SerializeField]
+    private bool instantKill = false;
+
+    [SerializeField]
     private BattleUIManager battleUIManager;
 
+    private EnemySpawner enemySpawner;
     private GameObject playerObject;
     private GameObject enemyObject;
 
@@ -58,14 +62,20 @@ public class BattleSystem : MonoBehaviour
 
     private void Start()
     {
-        turn = TURNS.Start;
-        battleUIManager.UpdateTurnIndicator(turn.ToString());
-        battleUIManager.SetUpCharacterInfo();
+        StartCoroutine(Setup());
+    }
 
+    IEnumerator Setup()
+    {
+        UpdateTurnIndicator(TURNS.Start);
+        battleUIManager.SetUpCharacterInfo();
+        battleUIManager.DisableButtons();
+
+        enemySpawner = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
         playerObject = GameObject.FindWithTag("Player");
         enemyObject = GameObject.FindWithTag("Enemy");
 
-        if( playerObject != null)
+        if (playerObject != null)
         {
             player = playerObject.GetComponent<Player>();
         }
@@ -84,9 +94,15 @@ public class BattleSystem : MonoBehaviour
             Debug.Log("No enemy in the current scene");
         }
 
-        turn = TURNS.PlayerTurn;
-        battleUIManager.UpdateTurnIndicator(turn.ToString());
+        yield return new WaitForSeconds(1f);
+        PlayerTurn();
 
+    }
+
+    void UpdateTurnIndicator(TURNS nextTurn)
+    {
+        turn = nextTurn;
+        battleUIManager.UpdateTurnIndicator(nextTurn.ToString());
     }
 
     double GetWordDamage()
@@ -105,21 +121,60 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAttackButton()
     {
+        if(GetWordDamage() > 0)
+        {
         if (turn == TURNS.PlayerTurn)
         {
+             if(instantKill)
+                {
+                    enemy.Die();
+                    StartCoroutine(SetupNewEnemy());
+                }
             Debug.Log("Word damage: " + GetWordDamage());
 
             enemy.TakeDamage(GetWordDamage());
 
             battleUIManager.UpdateCharacterHUD();
 
-            turn = TURNS.EnemyTurn;
-            battleUIManager.UpdateTurnIndicator(turn.ToString());
-            StartCoroutine(EnemyTurn());
 
             LetterGrid.Instance.ResetSelectedTiles();
+
+                battleUIManager.DisableButtons();
+                if(enemy.GetHealth() > 0)
+                {
+                    StartCoroutine(EnemyTurn());
+
+                }
+                else
+                {
+                    enemy.Die();
+                    StartCoroutine(SetupNewEnemy());
+
+                }
         }
+
+        }
+
         else return;
+    }
+
+    IEnumerator SetupNewEnemy()
+    {
+        yield return new WaitForSeconds(1f);
+        enemySpawner.CreateEnemy();
+        enemyObject = GameObject.FindWithTag("Enemy");
+        battleUIManager.SetUpCharacterInfo();
+
+        if(enemyObject != null)
+        {
+            enemy = enemyObject.GetComponent<Enemy>();
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            UpdateTurnIndicator(TURNS.Victory);
+        }
+        
     }
 
     public void OnScrambleButton()
@@ -128,17 +183,48 @@ public class BattleSystem : MonoBehaviour
         {
             Debug.Log("Scrambleee!");
             LetterGrid.Instance.ScrambleLetter();
+            battleUIManager.DisableButtons();
+            StartCoroutine(EnemyTurn());
         }
         else return;
     }
 
+    void PlayerTurn()
+    {
+        UpdateTurnIndicator(TURNS.PlayerTurn);
+        if (turn == TURNS.PlayerTurn)
+        {
+            battleUIManager.EnableButtons();
+        }
+    }
+
     IEnumerator EnemyTurn()
     {
+        UpdateTurnIndicator(TURNS.EnemyTurn);
+
+        if(turn == TURNS.EnemyTurn)
+        {
+            yield return new WaitForSeconds(0.5f);
+
         player.TakeDamage(enemy.SendDamage());
 
         battleUIManager.UpdateCharacterHUD();
 
         yield return new WaitForSeconds(1f);
+
+            if(player.GetHealth() > 0)
+            {
+            PlayerTurn();
+
+            }
+            else
+            {
+                player.Die();
+                UpdateTurnIndicator(TURNS.Defeated);
+            }
+
+        }
+
     }
 
 }

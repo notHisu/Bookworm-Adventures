@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour, ICharacterTemplate
     public void TakeDamage(double incomingDamage)
     {
         health -= incomingDamage;
-        Debug.Log("Enemy crrent health: " + health);
+        Debug.Log("Enemy current health: " + health);
 
     }
 
@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour, ICharacterTemplate
     {
         if(health <= 0)
         {
-            Debug.Log("Nothing happened");
+            Destroy(this.gameObject);
         }
     }
 }

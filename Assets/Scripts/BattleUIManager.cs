@@ -16,6 +16,12 @@ public class BattleUIManager : MonoBehaviour
     public Slider playerHP;
     public Slider enemyHP;
 
+    [SerializeField]
+    private Button attackButton;
+
+    [SerializeField]
+    private Button scrambleButton;
+
     public void SetUpCharacterInfo()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
@@ -45,6 +51,18 @@ public class BattleUIManager : MonoBehaviour
         playerHP.value = (float)player.GetHealth();
         enemyHP.value = (float)enemy.GetHealth();
 
+    }
+
+    public void DisableButtons ()
+    {
+        attackButton.enabled = false;
+        scrambleButton.enabled = false;
+    }
+
+    public void EnableButtons ()
+    {
+        attackButton.enabled = true;
+        scrambleButton.enabled = true;
     }
 
 }
