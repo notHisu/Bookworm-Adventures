@@ -2077,6 +2077,8 @@ MonoBehaviour:
   turnIndicator: {fileID: 799912805}
   playerHP: {fileID: 1208486090}
   enemyHP: {fileID: 749464389}
+  attackButton: {fileID: 0}
+  scrambleButton: {fileID: 0}
 --- !u!1 &1109047797
 GameObject:
   m_ObjectHideFlags: 0
@@ -3087,6 +3089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: 0
+  instantKill: 0
   battleUIManager: {fileID: 1073435732}
 --- !u!4 &1842998438
 Transform:
