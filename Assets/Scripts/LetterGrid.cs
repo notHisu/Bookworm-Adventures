@@ -6,6 +6,7 @@ using System;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
+using System.Linq;
 
 public class LetterGrid : MonoBehaviour
 {
@@ -68,13 +69,18 @@ public class LetterGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Setup();
+        GenerateLetterGrid();
+    }
+
+    void Setup()
+    {
         letterTiles = new List<GameObject>();
         selectedTiles = new List<GameObject>();
         originalTilePositions = new Dictionary<GameObject, Vector3>();
         selectedContainer = GameObject.Find("SelectedContainer");
         backgroundImage.SetActive(true);
         mainCamera = Camera.main;
-        GenerateLetterGrid();
     }
 
     private void Update()
@@ -127,6 +133,12 @@ public class LetterGrid : MonoBehaviour
         {
             originalTilePositions.Add(tile, tile.transform.localPosition);
         }
+
+        if(IsLetterGridValid())
+        {
+            Debug.Log("Letter list: " + LetterList());
+        }
+
     }
 
     string GetRandomLetter()
@@ -283,6 +295,31 @@ public class LetterGrid : MonoBehaviour
 
     }
 
+    bool IsLetterGridValid()
+    {
+        // Flag to track if a vowel is found
+        bool hasVowel = false;
+
+        foreach (GameObject tile in selectedTiles)
+        {
+            // Check if the letter on the tile is a vowel
+            if (IsVowel(tile.name))
+            {
+                hasVowel = true;
+                break; // Exit the loop once a vowel is found
+            }
+        }
+
+        // Return true if at least one vowel is found, false otherwise
+        return hasVowel;
+    }
+
+    bool IsVowel(string letter)
+    {
+        string[] vowels = new string[] { "A", "I", "U", "E", "O" };
+        return vowels.Contains(letter.ToUpper());
+    }
+
     public void ScrambleLetter()
     {
         // Remove all the selected tiles
@@ -297,6 +334,8 @@ public class LetterGrid : MonoBehaviour
             tile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
             tile.name = tile.GetComponentInChildren<TMP_Text>().text;
         }
+
+        Debug.Log("Letter list: " + LetterList());
     }
 
     public void ResetSelectedTiles()
@@ -310,6 +349,22 @@ public class LetterGrid : MonoBehaviour
             }
             DeselectTile(selectedTiles[0]);
         }
+
+        if (IsLetterGridValid())
+        {
+            Debug.Log("Letter list: " + LetterList());
+        }
+
+    }
+
+    string LetterList()
+    {
+        string letters = "";
+        foreach (GameObject tile in letterTiles)
+        {
+            letters += tile.name;
+        }
+        return letters;
     }
 
 }

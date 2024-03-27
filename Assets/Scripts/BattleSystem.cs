@@ -168,6 +168,7 @@ public class BattleSystem : MonoBehaviour
         if(enemyObject != null)
         {
             enemy = enemyObject.GetComponent<Enemy>();
+            Debug.Log("New enemy spawned!!");
         }
         else
         {
