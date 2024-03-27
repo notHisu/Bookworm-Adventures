@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
-using UnityEditor.Tilemaps;
-using System.Linq;
 
 public class LetterGrid : MonoBehaviour
 {

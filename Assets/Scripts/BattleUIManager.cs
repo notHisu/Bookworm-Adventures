@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.Networking.PlayerConnection;
+
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -23,6 +23,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField]
     private Button scrambleButton;
 
+    // Setup UI for player and enemy in the scene
     public void SetUpCharacterInfo()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
@@ -38,12 +39,14 @@ public class BattleUIManager : MonoBehaviour
 
     }
 
+    // Update turn indicator text
     public void UpdateTurnIndicator(string turn)
     {
         turnIndicator.text = turn;
-
     }
 
+
+    // Update player and enemy HUD if any changes are made
     public void UpdateCharacterHUD()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
@@ -54,12 +57,14 @@ public class BattleUIManager : MonoBehaviour
 
     }
 
+    // Disable battle UI
     public void DisableButtons()
     {
         attackButton.enabled = false;
         scrambleButton.enabled = false;
     }
 
+    // Enable battle UI
     public void EnableButtons()
     {
         attackButton.enabled = true;
