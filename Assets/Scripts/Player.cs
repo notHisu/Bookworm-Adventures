@@ -40,7 +40,7 @@ public class Player : MonoBehaviour, ICharacterTemplate
 
     public void TakeDamage(double incomingDamage)
     {
-        
+
         health -= incomingDamage;
         Debug.Log("Player current health: " + health);
     }

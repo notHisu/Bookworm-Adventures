@@ -18,7 +18,7 @@ public class SOCharacterData : ScriptableObject
     public double maxHealth;
 
     // For enemy only, 0 if is player
-    public double attackDamage; 
+    public double attackDamage;
 
     public GameObject characterPrefab;
 

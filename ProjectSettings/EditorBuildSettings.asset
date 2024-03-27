@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Bookworm/MenuScene.unity
+    guid: d2c46239e1e790b41ae24200717a4b8f
+  - enabled: 1
+    path: Assets/Scenes/Bookworm/BattleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Bookworm/Victory.unity
+    guid: a7ce530d11eb34b408e524ff23eaad9b
+  - enabled: 1
+    path: Assets/Scenes/Bookworm/Defeat.unity
+    guid: d34955409e1e94b4c81ce7e3494ad860
   m_configObjects: {}

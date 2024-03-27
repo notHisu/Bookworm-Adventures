@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public enum TURNS {Start, PlayerTurn, Processing, EnemyTurn, Victory, Defeated }
+public enum TURNS { Start, PlayerTurn, Processing, EnemyTurn, Victory, Defeated }
 
 public class BattleSystem : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class BattleSystem : MonoBehaviour
 
     private Player player;
     private Enemy enemy;
+
+    public List<string> usedWords;
 
     public static BattleSystem Instance
     {
@@ -68,6 +71,7 @@ public class BattleSystem : MonoBehaviour
         battleUIManager.SetUpCharacterInfo();
         battleUIManager.DisableButtons();
 
+        usedWords = new List<string>();
         enemySpawner = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
         playerObject = GameObject.FindWithTag("Player");
         enemyObject = GameObject.FindWithTag("Enemy");
@@ -118,22 +122,24 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAttackButton()
     {
-        if(GetWordDamage() > 0)
+        if (GetWordDamage() > 0)
         {
-        if (turn == TURNS.PlayerTurn)
-        {
+            if (turn == TURNS.PlayerTurn)
+            {
 
-            Debug.Log("Word damage: " + GetWordDamage());
+                Debug.Log("Word damage: " + GetWordDamage());
 
-            enemy.TakeDamage(GetWordDamage() + player.SendDamage());
+                enemy.TakeDamage(GetWordDamage() + player.SendDamage());
 
-            battleUIManager.UpdateCharacterHUD();
+                battleUIManager.UpdateCharacterHUD();
 
-
-            LetterGrid.Instance.ResetSelectedTiles();
+                string selectedWord = LetterGrid.Instance.GetSelectedWord();
+                usedWords.Add(selectedWord);
+                
+                LetterGrid.Instance.ResetSelectedTiles();
 
                 battleUIManager.DisableButtons();
-                if(enemy.GetHealth() > 0)
+                if (enemy.GetHealth() > 0)
                 {
                     StartCoroutine(EnemyTurn());
 
@@ -143,7 +149,7 @@ public class BattleSystem : MonoBehaviour
                     enemy.Die();
                     StartCoroutine(SetupNewEnemy());
                 }
-        }
+            }
 
         }
 
@@ -153,9 +159,12 @@ public class BattleSystem : MonoBehaviour
     IEnumerator SetupNewEnemy()
     {
         yield return new WaitForSeconds(1f);
+
         enemySpawner.CreateEnemy();
+
         enemyObject = GameObject.FindWithTag("Enemy");
-        if(enemyObject != null)
+
+        if (enemyObject != null)
         {
             battleUIManager.SetUpCharacterInfo();
             enemy = enemyObject.GetComponent<Enemy>();
@@ -164,10 +173,9 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(0.5f);
-            UpdateTurnIndicator(TURNS.Victory);
+            StartCoroutine(Victory());
         }
-        
+
     }
 
     public void OnScrambleButton()
@@ -185,6 +193,7 @@ public class BattleSystem : MonoBehaviour
     void PlayerTurn()
     {
         UpdateTurnIndicator(TURNS.PlayerTurn);
+
         if (turn == TURNS.PlayerTurn)
         {
             battleUIManager.EnableButtons();
@@ -195,29 +204,43 @@ public class BattleSystem : MonoBehaviour
     {
         UpdateTurnIndicator(TURNS.EnemyTurn);
 
-        if(turn == TURNS.EnemyTurn)
+        if (turn == TURNS.EnemyTurn)
         {
             yield return new WaitForSeconds(0.5f);
 
-        player.TakeDamage(enemy.SendDamage());
+            player.TakeDamage(enemy.SendDamage());
 
-        battleUIManager.UpdateCharacterHUD();
+            battleUIManager.UpdateCharacterHUD();
 
-        yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f);
 
-            if(player.GetHealth() > 0)
+            if (player.GetHealth() > 0)
             {
-            PlayerTurn();
-
+                PlayerTurn();
             }
             else
             {
                 player.Die();
-                UpdateTurnIndicator(TURNS.Defeated);
+                StartCoroutine(Defeated());
             }
 
         }
 
+    }
+
+    IEnumerator Victory()
+    {
+        yield return new WaitForSeconds(0.5f);
+        UpdateTurnIndicator(TURNS.Victory);
+        SceneManager.LoadScene("Victory");
+        
+    }
+
+    IEnumerator Defeated()
+    {
+        yield return new WaitForSeconds(0.5f);
+        UpdateTurnIndicator(TURNS.Defeated);
+        SceneManager.LoadScene("Defeated");
     }
 
 }

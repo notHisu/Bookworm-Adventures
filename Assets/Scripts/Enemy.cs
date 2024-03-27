@@ -24,7 +24,6 @@ public class Enemy : MonoBehaviour, ICharacterTemplate
         return health;
     }
 
-
     public void CharacterStats(SOCharacterData characterData)
     {
         enemyName = characterData.characterName;
@@ -47,7 +46,7 @@ public class Enemy : MonoBehaviour, ICharacterTemplate
 
     public void Die()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
             Destroy(this.gameObject);
         }

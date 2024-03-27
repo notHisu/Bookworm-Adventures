@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.Networking.PlayerConnection;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -53,13 +54,13 @@ public class BattleUIManager : MonoBehaviour
 
     }
 
-    public void DisableButtons ()
+    public void DisableButtons()
     {
         attackButton.enabled = false;
         scrambleButton.enabled = false;
     }
 
-    public void EnableButtons ()
+    public void EnableButtons()
     {
         attackButton.enabled = true;
         scrambleButton.enabled = true;

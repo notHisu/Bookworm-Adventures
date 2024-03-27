@@ -63,7 +63,6 @@ public class LetterGrid : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject); // Persist across scenes (optional)
     }
 
     // Start is called before the first frame update
@@ -87,7 +86,7 @@ public class LetterGrid : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            
+
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -123,7 +122,7 @@ public class LetterGrid : MonoBehaviour
                 letterTiles.Add(newTile);
                 newTile.transform.SetParent(transform);
                 newTile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
-                newTile.transform.localPosition = new Vector3(col+col*.15f, row+rowSpace, 0);
+                newTile.transform.localPosition = new Vector3(col + col * .15f, row + rowSpace, 0);
                 // Debug.Log($"x{newTile.transform.localPosition.x} y: x{newTile.transform.localPosition.y}");
                 newTile.name = newTile.GetComponentInChildren<TMP_Text>().text;
             }
@@ -134,9 +133,13 @@ public class LetterGrid : MonoBehaviour
             originalTilePositions.Add(tile, tile.transform.localPosition);
         }
 
-        if(IsLetterGridValid())
+        if (IsLetterGridValid())
         {
             Debug.Log("Letter list: " + GetLetterList());
+        }
+        else
+        {
+            ScrambleLetter();
         }
 
     }
@@ -273,6 +276,11 @@ public class LetterGrid : MonoBehaviour
         return selectedWord;
     }
 
+    public string GetSelectedWord()
+    {
+        return BuildSeletedWord();
+    }
+
     void CheckWordValidity()
     {
         string selectedWord = BuildSeletedWord().ToLower().Trim();
@@ -312,13 +320,6 @@ public class LetterGrid : MonoBehaviour
         return hasVowel;
     }
 
-
-    bool IsVowel(string letter)
-    {
-        string[] vowels = new string[] { "A", "I", "U", "E", "O" };
-        return vowels.Contains(letter.ToUpper());
-    }
-
     public void ScrambleLetter()
     {
         // Remove all the selected tiles
@@ -338,6 +339,10 @@ public class LetterGrid : MonoBehaviour
         {
             Debug.Log("Letter list: " + GetLetterList());
         }
+        else
+        {
+            ScrambleLetter();
+        }
 
     }
 
@@ -356,6 +361,10 @@ public class LetterGrid : MonoBehaviour
         if (IsLetterGridValid())
         {
             Debug.Log("Letter list: " + GetLetterList());
+        }
+        else
+        {
+            ScrambleLetter();
         }
 
     }

@@ -32,7 +32,6 @@ public class WordChecker : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject); // Persist across scenes (optional)
         LoadDictionary();
     }
 
