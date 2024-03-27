@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +10,6 @@ public class BattleSystem : MonoBehaviour
 {
     private static BattleSystem instance;
 
-
-    // Damage value = sum of each letter value in the word {wordValue, damageValue}
     private Dictionary<int, double> damageValues = new Dictionary<int, double>()
     {
         {1, 0}, {2, 0.25}, {3, 0.5}, {4, 0.75}, {5, 1},
@@ -29,11 +28,12 @@ public class BattleSystem : MonoBehaviour
     private GameObject enemyObject;
 
     private Player player;
+    private Animator playerAnimator;
+    private Animator enemyAnimator;
     private Enemy enemy;
 
     public List<string> usedWords;
 
-    // Singleton pattern for this object, just to make it easier to refer to this object
     public static BattleSystem Instance
     {
         get
@@ -60,6 +60,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         instance = this;
+        DontDestroyOnLoad(gameObject); // Persist across scenes (optional)
     }
 
     private void Start()
@@ -67,7 +68,6 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(Setup());
     }
 
-    // Take references about player and enemy in the scene
     IEnumerator Setup()
     {
         UpdateTurnIndicator(TURNS.Start);
@@ -82,6 +82,7 @@ public class BattleSystem : MonoBehaviour
         if (playerObject != null)
         {
             player = playerObject.GetComponent<Player>();
+            playerAnimator= player.GetComponent<Animator>();
         }
         else
         {
@@ -91,6 +92,8 @@ public class BattleSystem : MonoBehaviour
         if (enemyObject != null)
         {
             enemy = enemyObject.GetComponent<Enemy>();
+            enemyAnimator = enemy.GetComponent<Animator>();
+
 
         }
         else
@@ -103,15 +106,12 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-
-    // Update turn indicator text
     void UpdateTurnIndicator(TURNS nextTurn)
     {
         turn = nextTurn;
         battleUIManager.UpdateTurnIndicator(nextTurn.ToString());
     }
 
-    // Get word damage of the selected word
     double GetWordDamage()
     {
         int wordValue = LetterGrid.Instance.GetSelectedWordValue();
@@ -126,19 +126,21 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    // When the AttackButton is clicked, get the selected word's damage and send that to the enemy, go to EnemyTurn
     public void OnAttackButton()
     {
         if (GetWordDamage() > 0)
         {
             if (turn == TURNS.PlayerTurn)
             {
-
+                playerAnimator.SetInteger("animation", 1);
+                enemyAnimator.SetInteger("animation", -1);
                 Debug.Log("Word damage: " + GetWordDamage());
 
                 enemy.TakeDamage(GetWordDamage() + player.SendDamage());
 
                 battleUIManager.UpdateCharacterHUD();
+                playerAnimator.SetInteger("animation", 0);
+                enemyAnimator.SetInteger("animation", 0);
 
                 string selectedWord = LetterGrid.Instance.GetSelectedWord();
                 usedWords.Add(selectedWord);
@@ -163,7 +165,6 @@ public class BattleSystem : MonoBehaviour
         else return;
     }
 
-    // Create new enemy to continue the battle, this will end when there are no enemies left in the pool
     IEnumerator SetupNewEnemy()
     {
         yield return new WaitForSeconds(1f);
@@ -176,6 +177,7 @@ public class BattleSystem : MonoBehaviour
         {
             battleUIManager.SetUpCharacterInfo();
             enemy = enemyObject.GetComponent<Enemy>();
+            enemyAnimator=enemy.GetComponent<Animator>();
             Debug.Log("New enemy spawned!!");
             PlayerTurn();
         }
@@ -186,7 +188,6 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    // When clicked on ScrambleButton, reset all the tiles in the grid, go to EnemyTurn
     public void OnScrambleButton()
     {
         if (turn == TURNS.PlayerTurn)
@@ -199,7 +200,6 @@ public class BattleSystem : MonoBehaviour
         else return;
     }
 
-    // On PlayerTurn, enable UI buttons
     void PlayerTurn()
     {
         UpdateTurnIndicator(TURNS.PlayerTurn);
@@ -210,21 +210,23 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    // On EnemyTurn, attack player using enemy's base damage
     IEnumerator EnemyTurn()
     {
         UpdateTurnIndicator(TURNS.EnemyTurn);
 
         if (turn == TURNS.EnemyTurn)
         {
+            enemyAnimator.SetInteger("animation", 1);
             yield return new WaitForSeconds(0.5f);
-
+            playerAnimator.SetInteger("animation", -1);
+            
             player.TakeDamage(enemy.SendDamage());
 
             battleUIManager.UpdateCharacterHUD();
 
             yield return new WaitForSeconds(1f);
-
+            playerAnimator.SetInteger("animation", 0);
+            enemyAnimator.SetInteger("animation", 0);
             if (player.GetHealth() > 0)
             {
                 PlayerTurn();
@@ -239,7 +241,6 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    // When all enemies are defeated, load Victory scene
     IEnumerator Victory()
     {
         yield return new WaitForSeconds(0.5f);
@@ -248,7 +249,6 @@ public class BattleSystem : MonoBehaviour
         
     }
 
-    // When player is defeated, load Defeat scene
     IEnumerator Defeated()
     {
         yield return new WaitForSeconds(0.5f);
