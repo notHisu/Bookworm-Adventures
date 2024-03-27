@@ -19,9 +19,6 @@ public class BattleSystem : MonoBehaviour
     private TURNS turn;
 
     [SerializeField]
-    private bool instantKill = false;
-
-    [SerializeField]
     private BattleUIManager battleUIManager;
 
     private EnemySpawner enemySpawner;
@@ -125,14 +122,10 @@ public class BattleSystem : MonoBehaviour
         {
         if (turn == TURNS.PlayerTurn)
         {
-             if(instantKill)
-                {
-                    enemy.Die();
-                    StartCoroutine(SetupNewEnemy());
-                }
+
             Debug.Log("Word damage: " + GetWordDamage());
 
-            enemy.TakeDamage(GetWordDamage());
+            enemy.TakeDamage(GetWordDamage() + player.SendDamage());
 
             battleUIManager.UpdateCharacterHUD();
 
@@ -149,7 +142,6 @@ public class BattleSystem : MonoBehaviour
                 {
                     enemy.Die();
                     StartCoroutine(SetupNewEnemy());
-
                 }
         }
 
@@ -163,12 +155,12 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
         enemySpawner.CreateEnemy();
         enemyObject = GameObject.FindWithTag("Enemy");
-        battleUIManager.SetUpCharacterInfo();
-
         if(enemyObject != null)
         {
+            battleUIManager.SetUpCharacterInfo();
             enemy = enemyObject.GetComponent<Enemy>();
             Debug.Log("New enemy spawned!!");
+            PlayerTurn();
         }
         else
         {

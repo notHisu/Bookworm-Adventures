@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, ICharacterTemplate
     private string playerName;
     private double maxHealth;
     private double health;
+    private double attackDamage;
 
     public string GetName()
     {
@@ -28,11 +29,12 @@ public class Player : MonoBehaviour, ICharacterTemplate
         playerName = characterData.characterName;
         health = characterData.health;
         maxHealth = characterData.maxHealth;
+        attackDamage = characterData.attackDamage;
     }
 
     public double SendDamage()
     {
-        return 0;
+        return attackDamage;
     }
 
 

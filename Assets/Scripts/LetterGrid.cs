@@ -136,7 +136,7 @@ public class LetterGrid : MonoBehaviour
 
         if(IsLetterGridValid())
         {
-            Debug.Log("Letter list: " + LetterList());
+            Debug.Log("Letter list: " + GetLetterList());
         }
 
     }
@@ -297,22 +297,21 @@ public class LetterGrid : MonoBehaviour
 
     bool IsLetterGridValid()
     {
-        // Flag to track if a vowel is found
+        string letterList = GetLetterList();
         bool hasVowel = false;
 
-        foreach (GameObject tile in selectedTiles)
+        foreach (char letter in letterList)
         {
-            // Check if the letter on the tile is a vowel
-            if (IsVowel(tile.name))
+            if (letter == 'A' || letter == 'E' || letter == 'I' || letter == 'O' || letter == 'U')
             {
                 hasVowel = true;
                 break; // Exit the loop once a vowel is found
             }
         }
 
-        // Return true if at least one vowel is found, false otherwise
         return hasVowel;
     }
+
 
     bool IsVowel(string letter)
     {
@@ -335,7 +334,11 @@ public class LetterGrid : MonoBehaviour
             tile.name = tile.GetComponentInChildren<TMP_Text>().text;
         }
 
-        Debug.Log("Letter list: " + LetterList());
+        if (IsLetterGridValid())
+        {
+            Debug.Log("Letter list: " + GetLetterList());
+        }
+
     }
 
     public void ResetSelectedTiles()
@@ -352,12 +355,12 @@ public class LetterGrid : MonoBehaviour
 
         if (IsLetterGridValid())
         {
-            Debug.Log("Letter list: " + LetterList());
+            Debug.Log("Letter list: " + GetLetterList());
         }
 
     }
 
-    string LetterList()
+    string GetLetterList()
     {
         string letters = "";
         foreach (GameObject tile in letterTiles)
