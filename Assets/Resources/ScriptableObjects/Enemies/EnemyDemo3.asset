@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Enemy3
   characterType: 1
-  characterDescription: Demo prefab for enemy 2
+  characterDescription: Demo prefab for enemy 3
   health: 7
   maxHealth: 7
   attackDamage: 2
-  characterPrefab: {fileID: 3011773652253665036, guid: a02db7ab1b75cf14c85129c43df331fe, type: 3}
+  characterPrefab: {fileID: 3011773652253665036, guid: a4939c274678beb4f88c6f1ff147be9c, type: 3}
