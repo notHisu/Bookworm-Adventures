@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum TURNS { Start, PlayerTurn, Processing, EnemyTurn, Victory, Defeated }
 
@@ -132,15 +133,15 @@ public class BattleSystem : MonoBehaviour
         {
             if (turn == TURNS.PlayerTurn)
             {
-                playerAnimator.SetInteger("animation", 1);
-                enemyAnimator.SetInteger("animation", -1);
-                Debug.Log("Word damage: " + GetWordDamage());
+/*                enemyAnimator.SetInteger("animation", -1);
+*/                Debug.Log("Word damage: " + GetWordDamage());
+                StartCoroutine(AttackAndWait());
+                
 
                 enemy.TakeDamage(GetWordDamage() + player.SendDamage());
-
+              
                 battleUIManager.UpdateCharacterHUD();
-                playerAnimator.SetInteger("animation", 0);
-                enemyAnimator.SetInteger("animation", 0);
+                                /*enemyAnimator.SetInteger("animation", 0);*/
 
                 string selectedWord = LetterGrid.Instance.GetSelectedWord();
                 usedWords.Add(selectedWord);
@@ -158,11 +159,28 @@ public class BattleSystem : MonoBehaviour
                     enemy.Die();
                     StartCoroutine(SetupNewEnemy());
                 }
+                waitAndDoSomething(3f);
+               
+                /*  playerAnimator.SetInteger("animation", 0);*/
+
             }
 
         }
 
         else return;
+    }
+    IEnumerator AttackAndWait()
+    {
+        playerAnimator.Play("PlayerAttk");
+        yield return new WaitForSeconds(10);
+
+        /**//*  playerAnimator.Play("Base layer.PlayerIdle");
+*/
+    }
+
+    private IEnumerable waitAndDoSomething(float s)
+    {
+        yield return new WaitForSeconds(s);
     }
 
     IEnumerator SetupNewEnemy()
@@ -216,9 +234,9 @@ public class BattleSystem : MonoBehaviour
 
         if (turn == TURNS.EnemyTurn)
         {
-            enemyAnimator.SetInteger("animation", 1);
+            playerAnimator.SetInteger("animation", 1);
             yield return new WaitForSeconds(0.5f);
-            playerAnimator.SetInteger("animation", -1);
+/*            playerAnimator.SetInteger("animation", -1);*//**/
             
             player.TakeDamage(enemy.SendDamage());
 
@@ -226,8 +244,8 @@ public class BattleSystem : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
             playerAnimator.SetInteger("animation", 0);
-            enemyAnimator.SetInteger("animation", 0);
-            if (player.GetHealth() > 0)
+/*            enemyAnimator.SetInteger("animation", 0);
+*/            if (player.GetHealth() > 0)
             {
                 PlayerTurn();
             }
