@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class LetterGrid : MonoBehaviour
 {
-    [SerializeField] private GameObject letterTileBrozePrefab;
-    [SerializeField] private GameObject letterTileBroze1Prefab;
+    [SerializeField] private GameObject letterTileBronzePrefab;
+    [SerializeField] private GameObject letterTileBronze1Prefab;
     [SerializeField] private GameObject letterTileSilverPrefab;
     [SerializeField] private GameObject letterTileGoldPrefab;
     [SerializeField] private GameObject letterTileDiamondPrefab;
@@ -148,6 +148,7 @@ public class LetterGrid : MonoBehaviour
         }
 
     }
+
     GameObject makeNewTile()
     {
         string s = GetRandomLetter();
@@ -168,19 +169,21 @@ public class LetterGrid : MonoBehaviour
         }
         else if (wordValue > 1)
         {
-            newTile = Instantiate(letterTileBroze1Prefab, transform.position, Quaternion.identity);
+            newTile = Instantiate(letterTileBronze1Prefab, transform.position, Quaternion.identity);
 
         }
         else
-            newTile = Instantiate(letterTileBrozePrefab, transform.position, Quaternion.identity);
+            newTile = Instantiate(letterTileBronzePrefab, transform.position, Quaternion.identity);
         return newTile;
     }
+
     string GetRandomLetter()
     {
         char randomLetter = (char)UnityEngine.Random.Range(65, 91);
 
         return randomLetter.ToString();
     }
+
     double GetCharValue(string s)
     {
         
@@ -189,6 +192,7 @@ public class LetterGrid : MonoBehaviour
             return 0+letterValues[character];
         else return 0f;
     }
+
     int GetWordValue(string word)
     {
         double totalValue = 0;
@@ -324,17 +328,17 @@ public class LetterGrid : MonoBehaviour
         string selectedWord = BuildSeletedWord().ToLower().Trim();
         ColorBlock colorBlock = attackButton.colors;
         
-        if (selectedWord.Length > 0&&WordChecker.Instance.IsValidWord(selectedWord))
+        if (WordChecker.Instance.IsValidWord(selectedWord))
         {
             
             Debug.Log("Valid word: " + selectedWord);
-            colorBlock.normalColor = new Color(255, 255, 255);
-                attackButton.colors = colorBlock;
+            colorBlock.colorMultiplier = 5f;
+            attackButton.colors = colorBlock;
         
         }
         else
         {
-            colorBlock.normalColor = new Color(118, 75, 75);
+            colorBlock.colorMultiplier = 1f;
             attackButton.colors = colorBlock;
         }
 

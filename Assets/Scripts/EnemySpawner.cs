@@ -29,7 +29,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyList.Count > 0)
         {
-            enemyData = enemyList[0]; // Get the first enemy data
+            enemyData = enemyList[Random.Range(0,enemyCount)]; // Get the first enemy data
             enemy = GameObject.Instantiate(enemyData.characterPrefab) as GameObject;
 
             enemy.transform.SetParent(this.transform);
@@ -37,7 +37,7 @@ public class EnemySpawner : MonoBehaviour
 
             enemy.GetComponent<ICharacterTemplate>().CharacterStats(enemyData);
 
-            enemyList.RemoveAt(0); // Remove the used enemy data from the list
+            // enemyList.RemoveAt(0); // Remove the used enemy data from the list
         }
         else
         {
