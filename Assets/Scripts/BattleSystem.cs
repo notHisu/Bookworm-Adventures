@@ -61,7 +61,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject); // Persist across scenes (optional)
     }
 
     private void Start()
