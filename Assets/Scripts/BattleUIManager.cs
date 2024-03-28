@@ -76,7 +76,6 @@ public class BattleUIManager : MonoBehaviour
         ColorBlock buttonColor = attackButton.colors;
         buttonColor.colorMultiplier = 5f;
         attackButton.enabled = true;
-        attackButton.colors = buttonColor;
         scrambleButton.enabled = true;
         scrambleButton.colors = buttonColor;
 

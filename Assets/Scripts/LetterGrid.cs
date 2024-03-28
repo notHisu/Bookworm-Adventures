@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.Security.Cryptography;
+using UnityEngine.UI;
 
 public class LetterGrid : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class LetterGrid : MonoBehaviour
     [SerializeField] private GameObject letterTileDiamondPrefab;
     [SerializeField] private int gridSize = 4;
     [SerializeField] private GameObject backgroundImage;
+    [SerializeField] private Button attackButton;
     private static LetterGrid instance;
 
     private List<GameObject> letterTiles;
@@ -78,6 +80,7 @@ public class LetterGrid : MonoBehaviour
         letterTiles = new List<GameObject>();
         selectedTiles = new List<GameObject>();
         originalTilePositions = new Dictionary<GameObject, Vector3>();
+        attackButton =GameObject.Find("AttackButton").GetComponent<UnityEngine.UI.Button>();
         selectedContainer = GameObject.Find("SelectedContainer");
         backgroundImage.SetActive(true);
         mainCamera = Camera.main;
@@ -319,21 +322,20 @@ public class LetterGrid : MonoBehaviour
     void CheckWordValidity()
     {
         string selectedWord = BuildSeletedWord().ToLower().Trim();
-
-        if (selectedWord.Length > 0)
+        ColorBlock colorBlock = attackButton.colors;
+        
+        if (selectedWord.Length > 0&&WordChecker.Instance.IsValidWord(selectedWord))
         {
-            if (WordChecker.Instance.IsValidWord(selectedWord))
-            {
-                Debug.Log("Valid word: " + selectedWord);
-            }
-            else
-            {
-                // Debug.Log("Invalid word: " + selectedWord);
-            }
+            
+            Debug.Log("Valid word: " + selectedWord);
+            colorBlock.normalColor = new Color(255, 255, 255);
+                attackButton.colors = colorBlock;
+        
         }
         else
         {
-            // Debug.Log("Nothing has been selected");
+            colorBlock.normalColor = new Color(118, 75, 75);
+            attackButton.colors = colorBlock;
         }
 
     }
