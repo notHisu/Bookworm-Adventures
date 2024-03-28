@@ -44,11 +44,11 @@ public class Enemy : MonoBehaviour, ICharacterTemplate
 
     }
 
-    public void Die()
+    public void Die(float time=0)
     {
         if (health <= 0)
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject,time);
         }
     }
 }

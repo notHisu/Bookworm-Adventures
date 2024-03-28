@@ -133,15 +133,13 @@ public class BattleSystem : MonoBehaviour
         {
             if (turn == TURNS.PlayerTurn)
             {
-/*                enemyAnimator.SetInteger("animation", -1);
-*/                Debug.Log("Word damage: " + GetWordDamage());
-                StartCoroutine(AttackAndWait());
-                
+               Debug.Log("Word damage: " + GetWordDamage());
 
+                playerAnimator.Play("Attk");
+                enemyAnimator.Play("Hit");
                 enemy.TakeDamage(GetWordDamage() + player.SendDamage());
               
                 battleUIManager.UpdateCharacterHUD();
-                                /*enemyAnimator.SetInteger("animation", 0);*/
 
                 string selectedWord = LetterGrid.Instance.GetSelectedWord();
                 usedWords.Add(selectedWord);
@@ -156,12 +154,10 @@ public class BattleSystem : MonoBehaviour
                 }
                 else
                 {
-                    enemy.Die();
+                    enemy.Die(3);
                     StartCoroutine(SetupNewEnemy());
                 }
-                waitAndDoSomething(3f);
                
-                /*  playerAnimator.SetInteger("animation", 0);*/
 
             }
 
@@ -169,23 +165,11 @@ public class BattleSystem : MonoBehaviour
 
         else return;
     }
-    IEnumerator AttackAndWait()
-    {
-        playerAnimator.Play("PlayerAttk");
-        yield return new WaitForSeconds(10);
 
-        /**//*  playerAnimator.Play("Base layer.PlayerIdle");
-*/
-    }
-
-    private IEnumerable waitAndDoSomething(float s)
-    {
-        yield return new WaitForSeconds(s);
-    }
 
     IEnumerator SetupNewEnemy()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         enemySpawner.CreateEnemy();
 
@@ -210,6 +194,8 @@ public class BattleSystem : MonoBehaviour
     {
         if (turn == TURNS.PlayerTurn)
         {
+            playerAnimator.Play("hit");
+            enemyAnimator.Play("Attk");
             Debug.Log("Scrambleee!");
             LetterGrid.Instance.ScrambleLetter();
             battleUIManager.DisableButtons();
@@ -234,18 +220,14 @@ public class BattleSystem : MonoBehaviour
 
         if (turn == TURNS.EnemyTurn)
         {
-            playerAnimator.SetInteger("animation", 1);
             yield return new WaitForSeconds(0.5f);
-/*            playerAnimator.SetInteger("animation", -1);*//**/
             
             player.TakeDamage(enemy.SendDamage());
 
             battleUIManager.UpdateCharacterHUD();
 
             yield return new WaitForSeconds(1f);
-            playerAnimator.SetInteger("animation", 0);
-/*            enemyAnimator.SetInteger("animation", 0);
-*/            if (player.GetHealth() > 0)
+            if (player.GetHealth() > 0)
             {
                 PlayerTurn();
             }

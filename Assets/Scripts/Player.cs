@@ -45,7 +45,7 @@ public class Player : MonoBehaviour, ICharacterTemplate
         Debug.Log("Player current health: " + health);
     }
 
-    public void Die()
+    public void Die(float time = 0)
     {
         if (health <= 0)
         {

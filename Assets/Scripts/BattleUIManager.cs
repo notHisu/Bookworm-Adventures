@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.Build;
 
 
 public class BattleUIManager : MonoBehaviour
@@ -60,15 +61,25 @@ public class BattleUIManager : MonoBehaviour
     // Disable battle UI
     public void DisableButtons()
     {
+        ColorBlock buttonColor = attackButton.colors;
+        buttonColor.colorMultiplier = 1f;
         attackButton.enabled = false;
+        attackButton.colors = buttonColor;
         scrambleButton.enabled = false;
+        scrambleButton.colors = buttonColor;
+
     }
 
     // Enable battle UI
     public void EnableButtons()
     {
+        ColorBlock buttonColor = attackButton.colors;
+        buttonColor.colorMultiplier = 5f;
         attackButton.enabled = true;
+        attackButton.colors = buttonColor;
         scrambleButton.enabled = true;
+        scrambleButton.colors = buttonColor;
+
     }
 
 }
