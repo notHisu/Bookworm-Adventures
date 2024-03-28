@@ -93,8 +93,6 @@ public class BattleSystem : MonoBehaviour
         {
             enemy = enemyObject.GetComponent<Enemy>();
             enemyAnimator = enemy.GetComponent<Animator>();
-
-
         }
         else
         {
@@ -184,7 +182,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            StartCoroutine(Victory());
+            StartCoroutine(EndGame());
         }
 
     }
@@ -219,6 +217,8 @@ public class BattleSystem : MonoBehaviour
 
         if (turn == TURNS.EnemyTurn)
         {
+            playerAnimator.Play("hit");
+            enemyAnimator.Play("Attk");
             yield return new WaitForSeconds(0.5f);
             
             player.TakeDamage(enemy.SendDamage());
@@ -233,14 +233,14 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 player.Die();
-                StartCoroutine(Defeated());
+                StartCoroutine(EndGame());
             }
 
         }
 
     }
 
-    IEnumerator Victory()
+    IEnumerator EndGame()
     {
         yield return new WaitForSeconds(0.5f);
         UpdateTurnIndicator(TURNS.Victory);
@@ -248,11 +248,6 @@ public class BattleSystem : MonoBehaviour
         
     }
 
-    IEnumerator Defeated()
-    {
-        yield return new WaitForSeconds(0.5f);
-        UpdateTurnIndicator(TURNS.Defeated);
-        SceneManager.LoadScene("Defeated");
-    }
+    
 
 }

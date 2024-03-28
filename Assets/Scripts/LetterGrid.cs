@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Security.Cryptography;
 
 public class LetterGrid : MonoBehaviour
 {
-    [SerializeField] private GameObject letterTilePrefab;
+    [SerializeField] private GameObject letterTileBrozePrefab;
+    [SerializeField] private GameObject letterTileBroze1Prefab;
+    [SerializeField] private GameObject letterTileSilverPrefab;
+    [SerializeField] private GameObject letterTileGoldPrefab;
+    [SerializeField] private GameObject letterTileDiamondPrefab;
     [SerializeField] private int gridSize = 4;
     [SerializeField] private GameObject backgroundImage;
     private static LetterGrid instance;
@@ -114,8 +119,9 @@ public class LetterGrid : MonoBehaviour
             rowSpace = rowSpace + .15f;
             for (int col = 0; col < gridSize; col++)
             {
-                GameObject newTile = Instantiate(letterTilePrefab, transform.position, Quaternion.identity);
-                letterTiles.Add(newTile);
+               
+                GameObject newTile= makeNewTile();
+               letterTiles.Add(newTile);
                 newTile.transform.SetParent(transform);
                 newTile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
                 newTile.transform.localPosition = new Vector3(col + col * .15f, row + rowSpace, 0);
@@ -139,14 +145,47 @@ public class LetterGrid : MonoBehaviour
         }
 
     }
+    GameObject makeNewTile()
+    {
+        string s = GetRandomLetter();
+        double wordValue = GetCharValue(s);
+        GameObject newTile;
+        if (wordValue > 1.8f)
+        {
+            newTile = Instantiate(letterTileDiamondPrefab);
+        }
+        else if (wordValue > 1.5)
+        {
+            newTile = Instantiate(letterTileGoldPrefab);
+        }
+        else if (wordValue > 1.3)
+        {
+            newTile = Instantiate(letterTileSilverPrefab);
 
+        }
+        else if (wordValue > 1)
+        {
+            newTile = Instantiate(letterTileBroze1Prefab, transform.position, Quaternion.identity);
+
+        }
+        else
+            newTile = Instantiate(letterTileBrozePrefab, transform.position, Quaternion.identity);
+        return newTile;
+    }
     string GetRandomLetter()
     {
         char randomLetter = (char)UnityEngine.Random.Range(65, 91);
 
         return randomLetter.ToString();
     }
-
+    double GetCharValue(string s)
+    {
+        
+        char character = s.ToUpper().ToCharArray()[0];
+        if(letterValues.ContainsKey(character))
+            return 0+letterValues[character];
+        else return 0f;
+    }
     int GetWordValue(string word)
     {
         double totalValue = 0;
