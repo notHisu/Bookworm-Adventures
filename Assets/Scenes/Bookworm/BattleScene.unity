@@ -2297,13 +2297,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0936a74e49ffe7b49af38178f2713cbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  letterTileBrozePrefab: {fileID: 4669047319945093400, guid: 79acde66f6a534e34be85ca71e75812f, type: 3}
-  letterTileBroze1Prefab: {fileID: 1075668361534980305, guid: 0cfc9566c2cbef74bb04d3840d9bead8, type: 3}
+  letterTileBronzePrefab: {fileID: 4669047319945093400, guid: 79acde66f6a534e34be85ca71e75812f, type: 3}
+  letterTileBronze1Prefab: {fileID: 1075668361534980305, guid: 0cfc9566c2cbef74bb04d3840d9bead8, type: 3}
   letterTileSilverPrefab: {fileID: 2079755321889278722, guid: da19a1c7632ebe6458d6d298a583aab8, type: 3}
   letterTileGoldPrefab: {fileID: 4967412258662985644, guid: 99eb29d8add067a4c837cddcf328f719, type: 3}
   letterTileDiamondPrefab: {fileID: 8651191653847573615, guid: af62ae067ff51614481f6db700ad01bd, type: 3}
   gridSize: 4
   backgroundImage: {fileID: 345172160}
+  attackButton: {fileID: 513236853}
 --- !u!4 &1255569355
 Transform:
   m_ObjectHideFlags: 0
