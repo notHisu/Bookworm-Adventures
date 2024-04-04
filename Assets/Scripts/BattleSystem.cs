@@ -32,7 +32,8 @@ public class BattleSystem : MonoBehaviour
     private Animator playerAnimator;
     private Animator enemyAnimator;
     private Enemy enemy;
-
+    public AudioSource playerAttck;
+    public AudioSource enemyAttck;
     public List<string> usedWords;
 
     public static BattleSystem Instance

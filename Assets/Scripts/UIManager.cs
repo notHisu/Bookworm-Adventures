@@ -9,7 +9,8 @@ public class UIManager : MonoBehaviour
     private static UIManager instance;
     public Button startButton;
     public Button menuButton;
-
+    public AudioSource buttonMusic;
+    
     public static UIManager Instance
     {
         get
@@ -37,20 +38,33 @@ public class UIManager : MonoBehaviour
 
         instance = this;
     }
-
-    public void OnStartButton()
+        
+    public void  OnStartButton()
     {
         if(startButton != null)
         {
-            SceneManager.LoadScene("BattleScene");
+            buttonMusic.Play();
+            StartCoroutine(LoadSceneAfterSeconds("BattleScene", .5f));
         }
+    }
+    IEnumerator LoadSceneAfterSeconds(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(sceneName);
+
+    }
+    public void OnSettingsButton()
+    {
+        buttonMusic.Play();
+
     }
 
     public void OnMenuButton()
     {
         if(menuButton != null)
         {
-            SceneManager.LoadScene("MenuScene");
+            buttonMusic.Play();
+            StartCoroutine(LoadSceneAfterSeconds("MenuScene", .5f));
         }
     }
 }
