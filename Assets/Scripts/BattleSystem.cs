@@ -133,7 +133,6 @@ public class BattleSystem : MonoBehaviour
             {
                Debug.Log("Word damage: " + GetWordDamage());
 
-                playerAnimator.Play("Attk");
                 enemyAnimator.Play("Hit");
                 enemy.TakeDamage(GetWordDamage() + player.SendDamage());
               
@@ -163,7 +162,15 @@ public class BattleSystem : MonoBehaviour
 
         else return;
     }
+   IEnumerable PlayAnimationAndSound(bool isPlayerTurn=true)
+    {
+        if (isPlayerTurn)
+        {
+            playerAnimator.Play("Attk");
+            yield return new WaitForSeconds(1.5f);
 
+        }
+    }
 
     IEnumerator SetupNewEnemy()
     {
