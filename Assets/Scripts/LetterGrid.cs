@@ -1,21 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using System;
 using System.Security.Cryptography;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class LetterGrid : MonoBehaviour
 {
-    [SerializeField] private GameObject letterTileBronzePrefab;
-    [SerializeField] private GameObject letterTileBronze1Prefab;
-    [SerializeField] private GameObject letterTileSilverPrefab;
-    [SerializeField] private GameObject letterTileGoldPrefab;
-    [SerializeField] private GameObject letterTileDiamondPrefab;
-    [SerializeField] private int gridSize = 4;
-    [SerializeField] private GameObject backgroundImage;
-    [SerializeField] private Button attackButton;
+    [SerializeField]
+    private GameObject letterTileBronze;
+
+    [SerializeField]
+    private GameObject letterTileSilver;
+
+    [SerializeField]
+    private GameObject letterTileGold;
+
+    [SerializeField]
+    private int gridSize = 4;
+
+    [SerializeField]
+    private GameObject backgroundImage;
+
+    [SerializeField]
+    private Button attackButton;
     private static LetterGrid instance;
 
     private List<GameObject> letterTiles;
@@ -25,19 +34,46 @@ public class LetterGrid : MonoBehaviour
 
     private Camera mainCamera;
 
+    [SerializeField]
+    private AudioClip tileSelectSound;
+
+    [SerializeField]
+    private AudioClip wordValidSound;
+
+    [SerializeField]
+    private AudioSource audioSource;
+
     private Dictionary<char, double> letterValues = new Dictionary<char, double>()
     {
-    // Bronze value
-    {'A', 1}, {'D', 1}, {'E', 1}, {'G', 1}, {'I', 1}, {'L', 1}, {'N', 1}, {'O', 1}, {'R', 1}, {'S', 1}, {'T', 1}, {'U', 1},
-    {'B', 1.25}, {'C', 1.25}, {'F', 1.25}, {'H', 1.25}, {'M', 1.25}, {'P', 1.25},
-
-    // Silver value
-    {'V', 1.5}, {'W', 1.5}, {'Y', 1.5},
-    {'J', 1.75}, {'K', 1.75}, {'Q', 1.75},
-
-    //Gold value
-    {'X', 2}, {'Z', 2},
-
+        // Bronze value
+        { 'A', 1 },
+        { 'D', 1 },
+        { 'E', 1 },
+        { 'G', 1 },
+        { 'I', 1 },
+        { 'L', 1 },
+        { 'N', 1 },
+        { 'O', 1 },
+        { 'R', 1 },
+        { 'S', 1 },
+        { 'T', 1 },
+        { 'U', 1 },
+        { 'B', 1.25 },
+        { 'C', 1.25 },
+        { 'F', 1.25 },
+        { 'H', 1.25 },
+        { 'M', 1.25 },
+        { 'P', 1.25 },
+        // Silver value
+        { 'V', 1.5 },
+        { 'W', 1.5 },
+        { 'Y', 1.5 },
+        { 'J', 1.75 },
+        { 'K', 1.75 },
+        { 'Q', 1.75 },
+        //Gold value
+        { 'X', 2 },
+        { 'Z', 2 },
     };
 
     public static LetterGrid Instance
@@ -80,17 +116,17 @@ public class LetterGrid : MonoBehaviour
         letterTiles = new List<GameObject>();
         selectedTiles = new List<GameObject>();
         originalTilePositions = new Dictionary<GameObject, Vector3>();
-        attackButton =GameObject.Find("AttackButton").GetComponent<UnityEngine.UI.Button>();
+        attackButton = GameObject.Find("AttackButton").GetComponent<UnityEngine.UI.Button>();
         selectedContainer = GameObject.Find("SelectedContainer");
         backgroundImage.SetActive(true);
         mainCamera = Camera.main;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -122,11 +158,10 @@ public class LetterGrid : MonoBehaviour
             rowSpace = rowSpace + .15f;
             for (int col = 0; col < gridSize; col++)
             {
-               
-                GameObject newTile= makeNewTile();
-               letterTiles.Add(newTile);
+                GameObject newTile = CreateNewTile();
+                letterTiles.Add(newTile);
                 newTile.transform.SetParent(transform);
-                newTile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
+                newTile.GetComponentInChildren<TMP_Text>().text = newTile.name;
                 newTile.transform.localPosition = new Vector3(col + col * .15f, row + rowSpace, 0);
                 // Debug.Log($"x{newTile.transform.localPosition.x} y: x{newTile.transform.localPosition.y}");
                 newTile.name = newTile.GetComponentInChildren<TMP_Text>().text;
@@ -146,34 +181,25 @@ public class LetterGrid : MonoBehaviour
         {
             ScrambleLetter();
         }
-
     }
 
-    GameObject makeNewTile()
+    GameObject CreateNewTile()
     {
         string s = GetRandomLetter();
-        double wordValue = GetCharValue(s);
+        double charValue = GetCharValue(s);
         GameObject newTile;
-        if (wordValue > 1.8f)
+        if (charValue < 1.5f)
         {
-            newTile = Instantiate(letterTileDiamondPrefab);
+            newTile = Instantiate(letterTileBronze);
         }
-        else if (wordValue > 1.5)
+        else if (charValue < 2f)
         {
-            newTile = Instantiate(letterTileGoldPrefab);
-        }
-        else if (wordValue > 1.3)
-        {
-            newTile = Instantiate(letterTileSilverPrefab);
-
-        }
-        else if (wordValue > 1)
-        {
-            newTile = Instantiate(letterTileBronze1Prefab, transform.position, Quaternion.identity);
-
+            newTile = Instantiate(letterTileSilver);
         }
         else
-            newTile = Instantiate(letterTileBronzePrefab, transform.position, Quaternion.identity);
+        {
+            newTile = Instantiate(letterTileGold);
+        }
         return newTile;
     }
 
@@ -186,11 +212,11 @@ public class LetterGrid : MonoBehaviour
 
     double GetCharValue(string s)
     {
-        
         char character = s.ToUpper().ToCharArray()[0];
-        if(letterValues.ContainsKey(character))
-            return 0+letterValues[character];
-        else return 0f;
+        if (letterValues.ContainsKey(character))
+            return 0 + letterValues[character];
+        else
+            return 0f;
     }
 
     int GetWordValue(string word)
@@ -224,9 +250,13 @@ public class LetterGrid : MonoBehaviour
             {
                 return GetWordValue(selectedWord);
             }
-            else { return 0; }
+            else
+            {
+                return 0;
+            }
         }
-        else return 0;
+        else
+            return 0;
     }
 
     bool IsTileSelected(GameObject tile)
@@ -236,6 +266,7 @@ public class LetterGrid : MonoBehaviour
 
     void DeselectTile(GameObject tile)
     {
+        SoundManager.Instance.PlaySound(audioSource, tileSelectSound);
         int tileIndex = selectedTiles.IndexOf(tile);
         selectedTiles.Remove(tile);
         // Debug.Log("Removed: " + tile.name);
@@ -280,6 +311,7 @@ public class LetterGrid : MonoBehaviour
 
     void SelectTile(GameObject tile)
     {
+        SoundManager.Instance.PlaySound(audioSource, tileSelectSound);
         selectedTiles.Add(tile);
         // Debug.Log("Added: " + tile.name);
 
@@ -300,7 +332,11 @@ public class LetterGrid : MonoBehaviour
 
             // Calculate offset based on previous tile position and tile width
             float xPos = previousTile.transform.localPosition.x; // Replace spacing with your desired spacing
-            tile.transform.localPosition = new Vector3(xPos + 1, selectedContainer.transform.position.y, 0); // Assuming only X position needs adjustment
+            tile.transform.localPosition = new Vector3(
+                xPos + 1,
+                selectedContainer.transform.position.y,
+                0
+            ); // Assuming only X position needs adjustment
         }
 
         CheckWordValidity();
@@ -326,22 +362,20 @@ public class LetterGrid : MonoBehaviour
     void CheckWordValidity()
     {
         string selectedWord = BuildSeletedWord().ToLower().Trim();
-        ColorBlock colorBlock = attackButton.colors;
-        
+        ColorBlock attackButtonCB = attackButton.colors;
+
         if (WordChecker.Instance.IsValidWord(selectedWord))
         {
-            
+            SoundManager.Instance.PlaySound(audioSource, wordValidSound);
             Debug.Log("Valid word: " + selectedWord);
-            colorBlock.normalColor = new Color(255, 255, 255);
-            attackButton.colors = colorBlock;
-        
+            attackButtonCB.colorMultiplier = 3;
+            attackButton.colors = attackButtonCB;
         }
         else
         {
-            colorBlock.normalColor =new Color(118,75,75);
-            attackButton.colors = colorBlock;
+            attackButtonCB.colorMultiplier = 1;
+            attackButton.colors = attackButtonCB;
         }
-
     }
 
     bool IsLetterGridValid()
@@ -384,7 +418,6 @@ public class LetterGrid : MonoBehaviour
         {
             ScrambleLetter();
         }
-
     }
 
     public void ResetSelectedTiles()
@@ -407,7 +440,6 @@ public class LetterGrid : MonoBehaviour
         {
             ScrambleLetter();
         }
-
     }
 
     string GetLetterList()
@@ -419,5 +451,4 @@ public class LetterGrid : MonoBehaviour
         }
         return letters;
     }
-
 }

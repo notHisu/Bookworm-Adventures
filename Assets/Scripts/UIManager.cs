@@ -8,9 +8,22 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     private static UIManager instance;
-    public Button startButton,menuButton,aboutButton, settingstButton;
-    public AudioSource buttonMusic;
-    
+
+    [SerializeField]
+    private Button startButton,
+        menuButton,
+        aboutButton,
+        settingstButton,
+        scrambleButton,
+        attackButton;
+
+    [SerializeField]
+    private AudioClip clickSound;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip scrambleSound;
+    [SerializeField] private AudioClip attackSound;
+
+
     public static UIManager Instance
     {
         get
@@ -20,7 +33,7 @@ public class UIManager : MonoBehaviour
                 instance = FindObjectOfType<UIManager>();
                 if (instance == null)
                 {
-                    Debug.LogError("No LetterGrid found in scene. Creating instance.");
+                    Debug.LogError("No UIManager found in scene. Creating instance.");
                     instance = new UIManager();
                 }
             }
@@ -38,44 +51,56 @@ public class UIManager : MonoBehaviour
 
         instance = this;
     }
-        
-    public void  OnStartButton()
+
+    public void OnStartButton()
     {
-        if(startButton != null)
+        SoundManager.Instance.PlaySound(audioSource, clickSound);
+        if (startButton != null)
         {
-            buttonMusic.Play();
             StartCoroutine(LoadSceneAfterSeconds("BattleScene", .5f));
         }
     }
+
     IEnumerator LoadSceneAfterSeconds(string sceneName, float delay)
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(sceneName);
-
     }
-    
+
     public void OnMenuButton()
     {
-        if(menuButton != null)
+        SoundManager.Instance.PlaySound(audioSource, clickSound);
+        if (menuButton != null)
         {
-            buttonMusic.Play();
             StartCoroutine(LoadSceneAfterSeconds("MenuScene", .5f));
         }
     }
+
     public void OnAboutButton()
     {
-        if(aboutButton!=null)
-                {
-            buttonMusic.Play();
-            StartCoroutine(LoadSceneAfterSeconds("AboutScene", .5f));
+        SoundManager.Instance.PlaySound(audioSource, clickSound);
+        if (aboutButton != null)
+        {
+            StartCoroutine(LoadSceneAfterSeconds("About", .5f));
         }
     }
+
     public void OnSettingsButton()
     {
+        SoundManager.Instance.PlaySound(audioSource, clickSound);
         if (settingstButton != null)
         {
-            buttonMusic.Play();
-            StartCoroutine(LoadSceneAfterSeconds("SettingsScene", .5f));
+            StartCoroutine(LoadSceneAfterSeconds("Settings", .5f));
         }
+    }
+
+    public void OnAttackButton()
+    {
+        SoundManager.Instance.PlaySound(audioSource, attackSound);
+    }
+
+    public void OnScrambleButton()
+    {
+        SoundManager.Instance.PlaySound(audioSource, scrambleSound);
     }
 }

@@ -15,7 +15,9 @@ MonoBehaviour:
   characterName: PlayerDemo
   characterType: 0
   characterDescription: Demo prefab for player
-  health: 25
-  maxHealth: 25
+  health: 20
+  maxHealth: 20
   attackDamage: 99
+  attackSound: {fileID: 8300000, guid: e63dee75616d4274ead4318b8bea277e, type: 3}
+  gotHitSound: {fileID: 8300000, guid: 009483a294c407a45b812bf913ca0b75, type: 3}
   characterPrefab: {fileID: 1976800198410113586, guid: 72a950eedf5e16247b7fd3834941345b, type: 3}

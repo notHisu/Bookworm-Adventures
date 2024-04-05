@@ -6,7 +6,10 @@ using UnityEngine;
 public class Music : MonoBehaviour
 {
     public AudioSource src;
-    public AudioClip button, playerAttk, ememyAttak, background;
+    public AudioClip button,
+        playerAttk,
+        ememyAttak,
+        background;
     public AudioSource backgroudAudio;
 
     private void Start()
@@ -14,17 +17,20 @@ public class Music : MonoBehaviour
         backgroudAudio.clip = background;
         backgroudAudio.Play();
     }
+
     // Start is called before the first frame update
-    public  void buttonAudio()
+    public void buttonAudio()
     {
-       src.clip = button;
+        src.clip = button;
         src.Play();
     }
+
     public void PlayerAttck()
     {
-        src.clip= playerAttk;
+        src.clip = playerAttk;
         src.Play();
     }
+
     public void EnemyAttck()
     {
         src.clip = ememyAttak;

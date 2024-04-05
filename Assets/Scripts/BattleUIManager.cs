@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 using UnityEditor.Build;
-
+using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -37,7 +36,6 @@ public class BattleUIManager : MonoBehaviour
         enemyName.text = enemy.GetName();
         enemyHP.maxValue = (float)enemy.GetMaxHealth();
         enemyHP.value = (float)enemy.GetHealth();
-
     }
 
     // Update turn indicator text
@@ -45,7 +43,6 @@ public class BattleUIManager : MonoBehaviour
     {
         turnIndicator.text = turn;
     }
-
 
     // Update player and enemy HUD if any changes are made
     public void UpdateCharacterHUD()
@@ -55,30 +52,35 @@ public class BattleUIManager : MonoBehaviour
 
         playerHP.value = (float)player.GetHealth();
         enemyHP.value = (float)enemy.GetHealth();
-
     }
 
     // Disable battle UI
     public void DisableButtons()
     {
-        ColorBlock buttonColor = attackButton.colors;
-        buttonColor.normalColor = new Color(118, 75, 75);
-        attackButton.enabled = false;
-        attackButton.colors = buttonColor;
-        scrambleButton.enabled = false;
-        scrambleButton.colors = buttonColor;
+        ColorBlock attackButtonCB = attackButton.colors;
+        ColorBlock scrambleButtonCB = scrambleButton.colors;
 
+        attackButtonCB.colorMultiplier = 1;
+        attackButton.colors = attackButtonCB;
+        attackButton.enabled = false;
+
+        scrambleButtonCB.colorMultiplier = 1;
+        scrambleButton.enabled = false;
+        scrambleButton.colors = scrambleButtonCB;
     }
 
     // Enable battle UI
     public void EnableButtons()
     {
-        ColorBlock buttonColor = attackButton.colors;
-        buttonColor.normalColor = new Color(255,255,255);
-        attackButton.enabled = true;
+        ColorBlock attackButtonCB = attackButton.colors;
+        ColorBlock scrambleButtonCB = scrambleButton.colors;
+
+        attackButton.enabled = false;
+        attackButtonCB.colorMultiplier = 1;
+        attackButton.colors = attackButtonCB;
+
         scrambleButton.enabled = true;
-        scrambleButton.colors = buttonColor;
-
+        scrambleButtonCB.colorMultiplier = 3;
+        scrambleButton.colors = scrambleButtonCB;
     }
-
 }

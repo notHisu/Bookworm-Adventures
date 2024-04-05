@@ -4,9 +4,16 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
-public enum TURNS { Start, PlayerTurn, Processing, EnemyTurn, Victory, Defeated }
+public enum TURNS
+{
+    Start,
+    PlayerTurn,
+    Processing,
+    EnemyTurn,
+    Victory,
+    Defeated
+}
 
 public class BattleSystem : MonoBehaviour
 {
@@ -14,9 +21,22 @@ public class BattleSystem : MonoBehaviour
 
     private Dictionary<int, double> damageValues = new Dictionary<int, double>()
     {
-        {1, 0}, {2, 0.25}, {3, 0.5}, {4, 0.75}, {5, 1},
-        {6, 1.5}, {7, 2}, {8, 2.75}, {9, 3.5}, {10, 4.5}, {11, 5.5},
-        {12, 6.75}, {13, 8}, {14, 9.5}, {15, 11}, {16, 13}
+        { 1, 0 },
+        { 2, 0.25 },
+        { 3, 0.5 },
+        { 4, 0.75 },
+        { 5, 1 },
+        { 6, 1.5 },
+        { 7, 2 },
+        { 8, 2.75 },
+        { 9, 3.5 },
+        { 10, 4.5 },
+        { 11, 5.5 },
+        { 12, 6.75 },
+        { 13, 8 },
+        { 14, 9.5 },
+        { 15, 11 },
+        { 16, 13 }
     };
 
     [SerializeField]
@@ -30,12 +50,10 @@ public class BattleSystem : MonoBehaviour
     private GameObject enemyObject;
 
     private Player player;
-    private Animator playerAnimator;
-    private Animator enemyAnimator;
     private Enemy enemy;
-    public AudioSource src;
-    public AudioClip playerAttack,playerHit,enemyAttck,enemyHit,button;
-    public List<string> usedWords;
+    public int TotalScore = 0;
+
+    private Coroutine currentCoroutine;
 
     public static BattleSystem Instance
     {
@@ -67,16 +85,19 @@ public class BattleSystem : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Setup());
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        currentCoroutine = StartCoroutine(Setup());
     }
 
     IEnumerator Setup()
     {
-        UpdateTurnIndicator(TURNS.Start);
+        SetState(TURNS.Start);
         battleUIManager.SetUpCharacterInfo();
         battleUIManager.DisableButtons();
 
-        usedWords = new List<string>();
         enemySpawner = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
         playerObject = GameObject.FindWithTag("Player");
         enemyObject = GameObject.FindWithTag("Enemy");
@@ -84,7 +105,6 @@ public class BattleSystem : MonoBehaviour
         if (playerObject != null)
         {
             player = playerObject.GetComponent<Player>();
-            playerAnimator= player.GetComponent<Animator>();
         }
         else
         {
@@ -94,7 +114,6 @@ public class BattleSystem : MonoBehaviour
         if (enemyObject != null)
         {
             enemy = enemyObject.GetComponent<Enemy>();
-            enemyAnimator = enemy.GetComponent<Animator>();
         }
         else
         {
@@ -103,10 +122,9 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         PlayerTurn();
-
     }
 
-    void UpdateTurnIndicator(TURNS nextTurn)
+    void SetState(TURNS nextTurn)
     {
         turn = nextTurn;
         battleUIManager.UpdateTurnIndicator(nextTurn.ToString());
@@ -133,57 +151,50 @@ public class BattleSystem : MonoBehaviour
             if (turn == TURNS.PlayerTurn)
             {
                 Debug.Log("Word damage: " + GetWordDamage());
-                StartCoroutine(PlayAnimationAndSound());
-
-
+                if (currentCoroutine != null)
+                {
+                    StopCoroutine(currentCoroutine);
+                }
+                currentCoroutine = StartCoroutine(PlayerAttack());
             }
+        }
+    }
 
+    IEnumerator PlayerAttack()
+    {
+        yield return new WaitForSeconds(.2f);
+
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
         }
 
+        enemy.TakeDamage(GetWordDamage() + player.SendDamage());
+        battleUIManager.UpdateCharacterHUD();
+
+        LetterGrid.Instance.ResetSelectedTiles();
+
+        battleUIManager.DisableButtons();
+
+        if (enemy.GetHealth() > 0)
+        {
+            currentCoroutine = StartCoroutine(EnemyTurn());
+        }
         else
-        ;
-    }
-    IEnumerator PlayAnimationAndSound()
-    {
-        
-            src.clip = button;
-            src.Play();
-            yield return new WaitForSeconds(.2f);
-            playerAnimator.Play("Attk");
-            src.clip = playerAttack;
-            src.Play();
-            yield return new WaitForSeconds(1.5f);
-            src.clip = enemyHit;
-            src.Play();
-            enemyAnimator.Play("Hit");
-            enemy.TakeDamage(GetWordDamage() + player.SendDamage());
-
-            battleUIManager.UpdateCharacterHUD();
-
-            string selectedWord = LetterGrid.Instance.GetSelectedWord();
-            usedWords.Add(selectedWord);
-
-            LetterGrid.Instance.ResetSelectedTiles();
-
-            battleUIManager.DisableButtons();
-            if (enemy.GetHealth() > 0)
-            {
-                StartCoroutine(EnemyTurn());
-
-            }
-            else
-            {
-                enemy.Die(1);
-                StartCoroutine(SetupNewEnemy());
-            }
-        
-        
-
+        {
+            enemy.Die(1);
+            currentCoroutine = StartCoroutine(SetupNewEnemy());
+        }
     }
 
     IEnumerator SetupNewEnemy()
     {
         yield return new WaitForSeconds(1f);
+
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
 
         enemySpawner.CreateEnemy();
 
@@ -193,33 +204,36 @@ public class BattleSystem : MonoBehaviour
         {
             battleUIManager.SetUpCharacterInfo();
             enemy = enemyObject.GetComponent<Enemy>();
-            enemyAnimator=enemy.GetComponent<Animator>();
+
             Debug.Log("New enemy spawned!!");
             PlayerTurn();
         }
         else
         {
-            StartCoroutine(EndGame());
+            currentCoroutine = StartCoroutine(EndGame());
         }
-
     }
 
     public void OnScrambleButton()
     {
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
         if (turn == TURNS.PlayerTurn)
         {
-            
             Debug.Log("Scrambleee!");
             LetterGrid.Instance.ScrambleLetter();
             battleUIManager.DisableButtons();
-            StartCoroutine(EnemyTurn());
+            currentCoroutine = StartCoroutine(EnemyTurn());
         }
-        else return;
+        else
+            return;
     }
 
     void PlayerTurn()
     {
-        UpdateTurnIndicator(TURNS.PlayerTurn);
+        SetState(TURNS.PlayerTurn);
 
         if (turn == TURNS.PlayerTurn)
         {
@@ -229,18 +243,12 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        UpdateTurnIndicator(TURNS.EnemyTurn);
+        SetState(TURNS.EnemyTurn);
 
         if (turn == TURNS.EnemyTurn)
         {
-            enemyAnimator.Play("Attk");
-            src.clip = enemyAttck;
-            src.Play();
             yield return new WaitForSeconds(1.5f);
-            src.clip = playerHit;
-            src.Play(); 
-            playerAnimator.Play("hit");
-            
+
             player.TakeDamage(enemy.SendDamage());
 
             battleUIManager.UpdateCharacterHUD();
@@ -253,21 +261,20 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 player.Die();
-                StartCoroutine(EndGame());
+                currentCoroutine = StartCoroutine(EndGame());
             }
-
         }
-
     }
 
     IEnumerator EndGame()
     {
-        yield return new WaitForSeconds(0.5f);
-        UpdateTurnIndicator(TURNS.Victory);
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+
+        yield return new WaitForSeconds(1f);
+        SetState(TURNS.Victory);
         SceneManager.LoadScene("Victory");
-        
     }
-
-    
-
 }

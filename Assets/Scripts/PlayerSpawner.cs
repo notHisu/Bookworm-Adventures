@@ -6,6 +6,7 @@ public class PlayerSpawner : MonoBehaviour
 {
     private SOCharacterData playerData;
     private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,14 +15,13 @@ public class PlayerSpawner : MonoBehaviour
 
     void CreatePlayer()
     {
-        playerData = Object.Instantiate(Resources.Load("ScriptableObjects/PlayerDemo")) as SOCharacterData;
+        playerData =
+            Object.Instantiate(Resources.Load("ScriptableObjects/PlayerDemo")) as SOCharacterData;
         player = GameObject.Instantiate(playerData.characterPrefab) as GameObject;
 
         player.transform.SetParent(this.transform);
         player.name = "Player";
 
         player.GetComponent<ICharacterTemplate>().CharacterStats(playerData);
-
     }
-
 }

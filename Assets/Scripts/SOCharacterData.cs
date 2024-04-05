@@ -4,15 +4,21 @@ using UnityEngine;
 
 public enum CHARACTER_TYPE
 {
-    Player, Enemy
+    Player,
+    Enemy
 }
 
-[CreateAssetMenu(fileName = "Character Data", menuName = "Scriptable Objects/Character Data", order = 1)]
+[CreateAssetMenu(
+    fileName = "Character Data",
+    menuName = "Scriptable Objects/Character Data",
+    order = 1
+)]
 public class SOCharacterData : ScriptableObject
 {
     public string characterName;
     public CHARACTER_TYPE characterType;
     public string characterDescription;
+
     // public Sprite characterSprite;
     public double health;
     public double maxHealth;
@@ -20,6 +26,8 @@ public class SOCharacterData : ScriptableObject
     // For enemy only, 0 if is player
     public double attackDamage;
 
-    public GameObject characterPrefab;
+    public AudioClip attackSound;
+    public AudioClip gotHitSound;
 
+    public GameObject characterPrefab;
 }

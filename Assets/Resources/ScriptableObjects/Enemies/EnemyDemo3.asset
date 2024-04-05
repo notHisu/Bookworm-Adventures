@@ -18,4 +18,6 @@ MonoBehaviour:
   health: 7
   maxHealth: 7
   attackDamage: 2
+  attackSound: {fileID: 8300000, guid: 9f64a26d80f62e94d9d8451976b8ba15, type: 3}
+  gotHitSound: {fileID: 8300000, guid: 8cbd39c33f22b1f4abfc144a9039ccc7, type: 3}
   characterPrefab: {fileID: 3011773652253665036, guid: a4939c274678beb4f88c6f1ff147be9c, type: 3}

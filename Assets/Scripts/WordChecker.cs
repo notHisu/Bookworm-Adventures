@@ -61,7 +61,7 @@ public class WordChecker : MonoBehaviour
         {
             return validWords.Contains(word.ToLower());
         }
-        else return false;
+        else
+            return false;
     }
-
 }

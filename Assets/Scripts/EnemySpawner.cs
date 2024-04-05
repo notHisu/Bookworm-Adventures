@@ -18,7 +18,8 @@ public class EnemySpawner : MonoBehaviour
 
     void LoadLevelData()
     {
-        levelData = Object.Instantiate(Resources.Load("ScriptableObjects/Levels/Level1")) as SOLevelData;
+        levelData =
+            Object.Instantiate(Resources.Load("ScriptableObjects/Levels/Level1")) as SOLevelData;
         enemyCount = levelData.enemyScriptableObjects.Count;
         // Debug.Log("Enemy count: " + enemyCount);
         enemyList = levelData.enemyScriptableObjects;
@@ -29,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyList.Count > 0)
         {
-            enemyData = enemyList[Random.Range(0,enemyCount)]; // Get the first enemy data
+            enemyData = enemyList[Random.Range(0, enemyCount)]; // Get the first enemy data
             enemy = GameObject.Instantiate(enemyData.characterPrefab) as GameObject;
 
             enemy.transform.SetParent(this.transform);
@@ -44,5 +45,4 @@ public class EnemySpawner : MonoBehaviour
             Debug.Log("No more enemies to spawn!"); // Handle the case where the list is empty
         }
     }
-
 }
