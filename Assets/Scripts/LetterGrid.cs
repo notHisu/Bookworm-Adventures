@@ -332,13 +332,13 @@ public class LetterGrid : MonoBehaviour
         {
             
             Debug.Log("Valid word: " + selectedWord);
-            colorBlock.colorMultiplier = 5f;
+            colorBlock.normalColor = new Color(255, 255, 255);
             attackButton.colors = colorBlock;
         
         }
         else
         {
-            colorBlock.colorMultiplier = 1f;
+            colorBlock.normalColor =new Color(118,75,75);
             attackButton.colors = colorBlock;
         }
 

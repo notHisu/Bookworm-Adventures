@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,8 +8,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     private static UIManager instance;
-    public Button startButton;
-    public Button menuButton;
+    public Button startButton,menuButton,aboutButton, settingstButton;
     public AudioSource buttonMusic;
     
     public static UIManager Instance
@@ -53,18 +53,29 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
 
     }
-    public void OnSettingsButton()
-    {
-        buttonMusic.Play();
-
-    }
-
+    
     public void OnMenuButton()
     {
         if(menuButton != null)
         {
             buttonMusic.Play();
             StartCoroutine(LoadSceneAfterSeconds("MenuScene", .5f));
+        }
+    }
+    public void OnAboutButton()
+    {
+        if(aboutButton!=null)
+                {
+            buttonMusic.Play();
+            StartCoroutine(LoadSceneAfterSeconds("AboutScene", .5f));
+        }
+    }
+    public void OnSettingsButton()
+    {
+        if (settingstButton != null)
+        {
+            buttonMusic.Play();
+            StartCoroutine(LoadSceneAfterSeconds("SettingsScene", .5f));
         }
     }
 }

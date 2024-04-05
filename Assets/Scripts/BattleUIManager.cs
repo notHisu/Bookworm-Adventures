@@ -62,7 +62,7 @@ public class BattleUIManager : MonoBehaviour
     public void DisableButtons()
     {
         ColorBlock buttonColor = attackButton.colors;
-        buttonColor.colorMultiplier = 1f;
+        buttonColor.normalColor = new Color(118, 75, 75);
         attackButton.enabled = false;
         attackButton.colors = buttonColor;
         scrambleButton.enabled = false;
@@ -74,7 +74,7 @@ public class BattleUIManager : MonoBehaviour
     public void EnableButtons()
     {
         ColorBlock buttonColor = attackButton.colors;
-        buttonColor.colorMultiplier = 5f;
+        buttonColor.normalColor = new Color(255,255,255);
         attackButton.enabled = true;
         scrambleButton.enabled = true;
         scrambleButton.colors = buttonColor;

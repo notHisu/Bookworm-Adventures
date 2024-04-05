@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Experimental.GraphView.GraphView;
@@ -32,8 +33,8 @@ public class BattleSystem : MonoBehaviour
     private Animator playerAnimator;
     private Animator enemyAnimator;
     private Enemy enemy;
-    public AudioSource playerAttck;
-    public AudioSource enemyAttck;
+    public AudioSource src;
+    public AudioClip playerAttack,playerHit,enemyAttck,enemyHit,button;
     public List<string> usedWords;
 
     public static BattleSystem Instance
@@ -131,50 +132,58 @@ public class BattleSystem : MonoBehaviour
         {
             if (turn == TURNS.PlayerTurn)
             {
-               Debug.Log("Word damage: " + GetWordDamage());
+                Debug.Log("Word damage: " + GetWordDamage());
+                StartCoroutine(PlayAnimationAndSound());
 
-                enemyAnimator.Play("Hit");
-                enemy.TakeDamage(GetWordDamage() + player.SendDamage());
-              
-                battleUIManager.UpdateCharacterHUD();
-
-                string selectedWord = LetterGrid.Instance.GetSelectedWord();
-                usedWords.Add(selectedWord);
-                
-                LetterGrid.Instance.ResetSelectedTiles();
-
-                battleUIManager.DisableButtons();
-                if (enemy.GetHealth() > 0)
-                {
-                    StartCoroutine(EnemyTurn());
-
-                }
-                else
-                {
-                    enemy.Die(3);
-                    StartCoroutine(SetupNewEnemy());
-                }
-               
 
             }
 
         }
 
-        else return;
+        else
+        ;
     }
-   IEnumerable PlayAnimationAndSound(bool isPlayerTurn=true)
+    IEnumerator PlayAnimationAndSound()
     {
-        if (isPlayerTurn)
-        {
+        
+            src.clip = button;
+            src.Play();
+            yield return new WaitForSeconds(.2f);
             playerAnimator.Play("Attk");
+            src.clip = playerAttack;
+            src.Play();
             yield return new WaitForSeconds(1.5f);
+            src.clip = enemyHit;
+            src.Play();
+            enemyAnimator.Play("Hit");
+            enemy.TakeDamage(GetWordDamage() + player.SendDamage());
 
-        }
+            battleUIManager.UpdateCharacterHUD();
+
+            string selectedWord = LetterGrid.Instance.GetSelectedWord();
+            usedWords.Add(selectedWord);
+
+            LetterGrid.Instance.ResetSelectedTiles();
+
+            battleUIManager.DisableButtons();
+            if (enemy.GetHealth() > 0)
+            {
+                StartCoroutine(EnemyTurn());
+
+            }
+            else
+            {
+                enemy.Die(1);
+                StartCoroutine(SetupNewEnemy());
+            }
+        
+        
+
     }
 
     IEnumerator SetupNewEnemy()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         enemySpawner.CreateEnemy();
 
@@ -199,8 +208,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (turn == TURNS.PlayerTurn)
         {
-            playerAnimator.Play("hit");
-            enemyAnimator.Play("Attk");
+            
             Debug.Log("Scrambleee!");
             LetterGrid.Instance.ScrambleLetter();
             battleUIManager.DisableButtons();
@@ -225,9 +233,13 @@ public class BattleSystem : MonoBehaviour
 
         if (turn == TURNS.EnemyTurn)
         {
-            playerAnimator.Play("hit");
             enemyAnimator.Play("Attk");
-            yield return new WaitForSeconds(0.5f);
+            src.clip = enemyAttck;
+            src.Play();
+            yield return new WaitForSeconds(1.5f);
+            src.clip = playerHit;
+            src.Play(); 
+            playerAnimator.Play("hit");
             
             player.TakeDamage(enemy.SendDamage());
 
