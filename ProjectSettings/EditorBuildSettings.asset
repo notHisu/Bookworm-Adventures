@@ -17,7 +17,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bookworm/About.unity
     guid: 14bfddc422658b44e854b0e299a36be1
-  - enabled: 1
-    path: Assets/Scenes/Bookworm/Settings.unity
-    guid: be804b3405832b64cb245e38e83c328b
   m_configObjects: {}

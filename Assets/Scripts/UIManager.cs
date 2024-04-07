@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
         menuButton,
         aboutButton,
         settingsMenuButton,
+        backButton,
         scrambleButton,
         attackButton;
 
@@ -78,6 +79,12 @@ public class UIManager : MonoBehaviour
             currentScoreText.text = $"YOUR SCORE:\n{ScoreManager.Instance.GetCurrentScore()}";
             bestScoreText.text = $"BEST SCORE: {ScoreManager.Instance.GetBestScore()}";
         }
+
+        if (musicToggle != null && soundEffectToggle != null)
+        {
+            musicToggle.isOn = PlayerPrefs.GetInt("MusicOn", 1) == 1;
+            soundEffectToggle.isOn = PlayerPrefs.GetInt("SFXOn", 1) == 1;
+        }
     }
 
     public void OnStartButton()
@@ -140,5 +147,14 @@ public class UIManager : MonoBehaviour
     public void OnSoundEffectToggle()
     {
         SoundManager.Instance.ToggleSFX(soundEffectToggle.isOn);
+    }
+
+    public void OnBackButton()
+    {
+        SoundManager.Instance.PlaySound(audioSource, clickSound);
+        if (backButton != null)
+        {
+            StartCoroutine(LoadSceneAfterSeconds("MenuScene", .5f));
+        }
     }
 }
