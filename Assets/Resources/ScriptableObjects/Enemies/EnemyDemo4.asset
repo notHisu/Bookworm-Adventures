@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9781874d169354149adc2c6727c8d57d, type: 3}
+  m_Name: EnemyDemo4
+  m_EditorClassIdentifier: 
+  characterName: Enemy4
+  characterType: 1
+  characterDescription: Demo prefab for enemy 4
+  health: 8
+  maxHealth: 8
+  attackDamage: 3
+  attackSound: {fileID: 8300000, guid: 9f64a26d80f62e94d9d8451976b8ba15, type: 3}
+  gotHitSound: {fileID: 8300000, guid: 8cbd39c33f22b1f4abfc144a9039ccc7, type: 3}
+  characterPrefab: {fileID: 7745193934957491941, guid: 43c895948295db048a4f4a301a09a202, type: 3}

@@ -368,11 +368,14 @@ public class LetterGrid : MonoBehaviour
         {
             SoundManager.Instance.PlaySound(audioSource, wordValidSound);
             Debug.Log("Valid word: " + selectedWord);
-            attackButtonCB.colorMultiplier = 3;
+
+            attackButton.enabled = true;
+            attackButtonCB.colorMultiplier = 2;
             attackButton.colors = attackButtonCB;
         }
         else
         {
+            attackButton.enabled = false;
             attackButtonCB.colorMultiplier = 1;
             attackButton.colors = attackButtonCB;
         }

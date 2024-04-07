@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,16 +14,34 @@ public class UIManager : MonoBehaviour
     private Button startButton,
         menuButton,
         aboutButton,
-        settingstButton,
+        settingsMenuButton,
         scrambleButton,
         attackButton;
 
     [SerializeField]
     private AudioClip clickSound;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip scrambleSound;
-    [SerializeField] private AudioClip attackSound;
 
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip scrambleSound;
+
+    [SerializeField]
+    private AudioClip attackSound;
+
+    [SerializeField]
+    private TMP_Text currentScoreText,
+        bestScoreText;
+
+    [SerializeField]
+    private GameObject settingsPanel;
+
+    [SerializeField]
+    private Toggle musicToggle;
+
+    [SerializeField]
+    private Toggle soundEffectToggle;
 
     public static UIManager Instance
     {
@@ -52,6 +71,15 @@ public class UIManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "Victory")
+        {
+            currentScoreText.text = $"YOUR SCORE:\n{ScoreManager.Instance.GetCurrentScore()}";
+            bestScoreText.text = $"BEST SCORE: {ScoreManager.Instance.GetBestScore()}";
+        }
+    }
+
     public void OnStartButton()
     {
         SoundManager.Instance.PlaySound(audioSource, clickSound);
@@ -76,21 +104,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OnSettingsPanelButton()
+    {
+        SoundManager.Instance.PlaySound(audioSource, clickSound);
+        if (settingsMenuButton != null)
+        {
+            settingsPanel.SetActive(!settingsPanel.activeSelf);
+        }
+    }
+
     public void OnAboutButton()
     {
         SoundManager.Instance.PlaySound(audioSource, clickSound);
         if (aboutButton != null)
         {
             StartCoroutine(LoadSceneAfterSeconds("About", .5f));
-        }
-    }
-
-    public void OnSettingsButton()
-    {
-        SoundManager.Instance.PlaySound(audioSource, clickSound);
-        if (settingstButton != null)
-        {
-            StartCoroutine(LoadSceneAfterSeconds("Settings", .5f));
         }
     }
 
@@ -102,5 +130,15 @@ public class UIManager : MonoBehaviour
     public void OnScrambleButton()
     {
         SoundManager.Instance.PlaySound(audioSource, scrambleSound);
+    }
+
+    public void OnMusicToggle()
+    {
+        SoundManager.Instance.ToggleMusic(musicToggle.isOn);
+    }
+
+    public void OnSoundEffectToggle()
+    {
+        SoundManager.Instance.ToggleSFX(soundEffectToggle.isOn);
     }
 }

@@ -23,6 +23,9 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField]
     private Button scrambleButton;
 
+    [SerializeField]
+    private TMP_Text currentScore;
+
     // Setup UI for player and enemy in the scene
     public void SetUpCharacterInfo()
     {
@@ -52,6 +55,8 @@ public class BattleUIManager : MonoBehaviour
 
         playerHP.value = (float)player.GetHealth();
         enemyHP.value = (float)enemy.GetHealth();
+
+        currentScore.text = ScoreManager.Instance.GetCurrentScore().ToString();
     }
 
     // Disable battle UI
@@ -60,12 +65,12 @@ public class BattleUIManager : MonoBehaviour
         ColorBlock attackButtonCB = attackButton.colors;
         ColorBlock scrambleButtonCB = scrambleButton.colors;
 
+        attackButton.enabled = false;
         attackButtonCB.colorMultiplier = 1;
         attackButton.colors = attackButtonCB;
-        attackButton.enabled = false;
 
-        scrambleButtonCB.colorMultiplier = 1;
         scrambleButton.enabled = false;
+        scrambleButtonCB.colorMultiplier = 1;
         scrambleButton.colors = scrambleButtonCB;
     }
 

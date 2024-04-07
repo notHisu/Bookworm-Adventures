@@ -515,7 +515,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Best Score: 100'
+  m_text: 'Best Score: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4eee608ac5c2b947b1bec02ec3d8605, type: 2}
   m_sharedMaterial: {fileID: 2161037275181773332, guid: f4eee608ac5c2b947b1bec02ec3d8605, type: 2}
@@ -651,7 +651,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Your Score:
 
-    500'
+    0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4eee608ac5c2b947b1bec02ec3d8605, type: 2}
   m_sharedMaterial: {fileID: 2161037275181773332, guid: f4eee608ac5c2b947b1bec02ec3d8605, type: 2}
@@ -1720,8 +1720,14 @@ MonoBehaviour:
   menuButton: {fileID: 237909830}
   aboutButton: {fileID: 0}
   settingstButton: {fileID: 0}
+  scrambleButton: {fileID: 0}
+  attackButton: {fileID: 0}
   clickSound: {fileID: 8300000, guid: eea0d20f0c072b74ba966a893f132e07, type: 3}
   audioSource: {fileID: 1756060677}
+  scrambleSound: {fileID: 0}
+  attackSound: {fileID: 0}
+  currentScoreText: {fileID: 1128481010}
+  bestScoreText: {fileID: 928342258}
 --- !u!82 &1756060676
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1736,7 +1742,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

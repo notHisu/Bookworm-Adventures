@@ -51,9 +51,12 @@ public class BattleSystem : MonoBehaviour
 
     private Player player;
     private Enemy enemy;
-    public int TotalScore = 0;
 
     private Coroutine currentCoroutine;
+
+    private float playerTurnDelay = 1f;
+    private float enemyTurnDelay = 2f;
+    private float processingDelay = 1f;
 
     public static BattleSystem Instance
     {
@@ -120,7 +123,7 @@ public class BattleSystem : MonoBehaviour
             Debug.Log("No enemy in the current scene");
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(processingDelay);
         PlayerTurn();
     }
 
@@ -150,6 +153,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (turn == TURNS.PlayerTurn)
             {
+                ScoreManager.Instance.AddScore(GetWordDamage());
                 Debug.Log("Word damage: " + GetWordDamage());
                 if (currentCoroutine != null)
                 {
@@ -162,15 +166,18 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        yield return new WaitForSeconds(.2f);
-
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
 
         enemy.TakeDamage(GetWordDamage() + player.SendDamage());
+
+        yield return new WaitForSeconds(playerTurnDelay);
+
         battleUIManager.UpdateCharacterHUD();
+
+        yield return new WaitForSeconds(processingDelay);
 
         LetterGrid.Instance.ResetSelectedTiles();
 
@@ -189,12 +196,13 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupNewEnemy()
     {
-        yield return new WaitForSeconds(1f);
 
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
+
+        yield return new WaitForSeconds(processingDelay);
 
         enemySpawner.CreateEnemy();
 
@@ -247,13 +255,15 @@ public class BattleSystem : MonoBehaviour
 
         if (turn == TURNS.EnemyTurn)
         {
-            yield return new WaitForSeconds(1.5f);
 
             player.TakeDamage(enemy.SendDamage());
 
+            yield return new WaitForSeconds(enemyTurnDelay);
+
             battleUIManager.UpdateCharacterHUD();
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(processingDelay);
+
             if (player.GetHealth() > 0)
             {
                 PlayerTurn();
@@ -273,7 +283,7 @@ public class BattleSystem : MonoBehaviour
             StopCoroutine(currentCoroutine);
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(processingDelay);
         SetState(TURNS.Victory);
         SceneManager.LoadScene("Victory");
     }
