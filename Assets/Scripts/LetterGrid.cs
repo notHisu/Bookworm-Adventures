@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class LetterGrid : MonoBehaviour
 {
+    // SerializeField for different types of letter tiles
     [SerializeField]
     private GameObject letterTileBronze;
 
@@ -17,32 +18,49 @@ public class LetterGrid : MonoBehaviour
     [SerializeField]
     private GameObject letterTileGold;
 
+    // Size of the grid
     [SerializeField]
     private int gridSize = 4;
 
+    // Background image for the grid
     [SerializeField]
     private GameObject backgroundImage;
 
+    // Attack button
     [SerializeField]
     private Button attackButton;
+
+    // Singleton instance
     private static LetterGrid instance;
 
+    // List of letter tiles
     private List<GameObject> letterTiles;
+
+    // List of selected tiles
     private List<GameObject> selectedTiles;
+
+    // GameObject for selected tiles container
     private GameObject selectedContainer;
+
+    // Dictionary to store original tile positions
     private Dictionary<GameObject, Vector3> originalTilePositions;
 
+    // Main camera
     private Camera mainCamera;
 
+    // Audio clip when a tile is selected
     [SerializeField]
     private AudioClip tileSelectSound;
 
+    // Audio clip for valid word
     [SerializeField]
     private AudioClip wordValidSound;
 
+    // Audio source for playing audio clips
     [SerializeField]
     private AudioSource audioSource;
 
+    // Dictionary to store letter values
     private Dictionary<char, double> letterValues = new Dictionary<char, double>()
     {
         // Bronze value
@@ -76,6 +94,109 @@ public class LetterGrid : MonoBehaviour
         { 'Z', 2 },
     };
 
+    private List<string> LetterPool = new List<string>
+    {
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "I",
+        "I",
+        "I",
+        "I",
+        "I",
+        "I",
+        "I",
+        "I",
+        "I",
+        "O",
+        "O",
+        "O",
+        "O",
+        "O",
+        "O",
+        "O",
+        "O",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "L",
+        "L",
+        "L",
+        "L",
+        "S",
+        "S",
+        "S",
+        "S",
+        "U",
+        "U",
+        "U",
+        "D",
+        "D",
+        "D",
+        "G",
+        "G",
+        "B",
+        "B",
+        "C",
+        "C",
+        "M",
+        "M",
+        "P",
+        "P",
+        "F",
+        "F",
+        "H",
+        "H",
+        "V",
+        "V",
+        "W",
+        "W",
+        "Y",
+        "Y",
+        "K",
+        "J",
+        "X",
+        "Q",
+        "Z"
+    };
+
+    // Get the instance of the LetterGrid
     public static LetterGrid Instance
     {
         get
@@ -93,6 +214,7 @@ public class LetterGrid : MonoBehaviour
         }
     }
 
+    // Awake is called when the script instance is being loaded
     void Awake()
     {
         if (instance != null && instance != this)
@@ -111,20 +233,10 @@ public class LetterGrid : MonoBehaviour
         GenerateLetterGrid();
     }
 
-    void Setup()
-    {
-        letterTiles = new List<GameObject>();
-        selectedTiles = new List<GameObject>();
-        originalTilePositions = new Dictionary<GameObject, Vector3>();
-        attackButton = GameObject.Find("AttackButton").GetComponent<UnityEngine.UI.Button>();
-        selectedContainer = GameObject.Find("SelectedContainer");
-        backgroundImage.SetActive(true);
-        mainCamera = Camera.main;
-        audioSource = GetComponent<AudioSource>();
-    }
-
+    // Raycast to check if a tile is clicked
     private void Update()
     {
+        // Check if the left mouse button is clicked
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -149,67 +261,116 @@ public class LetterGrid : MonoBehaviour
         }
     }
 
+    // Get all required components and setup the game
+    void Setup()
+    {
+        letterTiles = new List<GameObject>();
+        selectedTiles = new List<GameObject>();
+        originalTilePositions = new Dictionary<GameObject, Vector3>();
+        attackButton = GameObject.Find("AttackButton").GetComponent<UnityEngine.UI.Button>();
+        selectedContainer = GameObject.Find("SelectedContainer");
+        backgroundImage.SetActive(true);
+        mainCamera = Camera.main;
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    // Generate a grid of letter tiles.
     void GenerateLetterGrid()
     {
+        // This variable is used to adjust the spacing between rows.
         float rowSpace = -0.6f;
 
+        // Loop over each row in the grid.
         for (int row = 0; row < gridSize; row++)
         {
+            // Increase the row space by 0.15 for each new row.
             rowSpace = rowSpace + .15f;
+
+            // Loop over each column in the grid.
             for (int col = 0; col < gridSize; col++)
             {
+                // Create a new tile and add it to the list of letter tiles.
                 GameObject newTile = CreateNewTile();
                 letterTiles.Add(newTile);
+
+                // Set the parent of the new tile to be this object (the grid).
                 newTile.transform.SetParent(transform);
+
+                // Set the text of the tile to be its name.
                 newTile.GetComponentInChildren<TMP_Text>().text = newTile.name;
+
+                // Set the local position of the tile in the grid.
                 newTile.transform.localPosition = new Vector3(col + col * .15f, row + rowSpace, 0);
-                // Debug.Log($"x{newTile.transform.localPosition.x} y: x{newTile.transform.localPosition.y}");
+
+                // Set the name of the tile to be its text.
                 newTile.name = newTile.GetComponentInChildren<TMP_Text>().text;
             }
         }
 
+        // Store the original positions of all the tiles.
         foreach (GameObject tile in letterTiles)
         {
             originalTilePositions.Add(tile, tile.transform.localPosition);
         }
 
+        // Check if the letter grid is valid.
         if (IsLetterGridValid())
         {
+            // If it is, log the list of letters.
             Debug.Log("Letter list: " + GetLetterList());
         }
         else
         {
+            // If it's not, scramble the letters.
             ScrambleLetter();
         }
     }
 
+    // Create a new tile with a random letter.
     GameObject CreateNewTile()
     {
-        string s = GetRandomLetter();
-        double charValue = GetCharValue(s);
+        // Generate a random letter.
+        string l = GetRandomLetter();
+
+        // Calculate the value of the letter.
+        double charValue = GetCharValue(l);
+
+        // Declare a new GameObject to hold the new tile.
         GameObject newTile;
+
+        // If the value of the letter is less than 1.5, create a bronze tile.
         if (charValue < 1.5f)
         {
             newTile = Instantiate(letterTileBronze);
         }
+        // If the value of the letter is less than 2, create a silver tile.
         else if (charValue < 2f)
         {
             newTile = Instantiate(letterTileSilver);
         }
+        // Otherwise, create a gold tile.
         else
         {
             newTile = Instantiate(letterTileGold);
         }
+
+        // Return the new tile.
         return newTile;
     }
 
+    // Generate a random letter.
     string GetRandomLetter()
     {
-        char randomLetter = (char)UnityEngine.Random.Range(65, 91);
+        // char randomLetter = (char)UnityEngine.Random.Range(65, 91);
 
-        return randomLetter.ToString();
+        // return randomLetter.ToString();
+
+        string randomLetter = LetterPool[UnityEngine.Random.Range(0, LetterPool.Count)];
+
+        return randomLetter;
     }
 
+    // Get the value of a character.
     double GetCharValue(string s)
     {
         char character = s.ToUpper().ToCharArray()[0];
@@ -219,6 +380,7 @@ public class LetterGrid : MonoBehaviour
             return 0f;
     }
 
+    // Get the value of a word
     int GetWordValue(string word)
     {
         double totalValue = 0;
@@ -240,6 +402,7 @@ public class LetterGrid : MonoBehaviour
         return (int)Math.Round(totalValue);
     }
 
+    // Get the value of the selected word
     public int GetSelectedWordValue()
     {
         string selectedWord = BuildSeletedWord();
@@ -259,89 +422,113 @@ public class LetterGrid : MonoBehaviour
             return 0;
     }
 
+    // Check if a tile is selected
     bool IsTileSelected(GameObject tile)
     {
         return selectedTiles.Contains(tile);
     }
 
+    // Deselect a tile.
     void DeselectTile(GameObject tile)
     {
+        // Play the tile selection sound.
         SoundManager.Instance.PlaySound(audioSource, tileSelectSound);
-        int tileIndex = selectedTiles.IndexOf(tile);
-        selectedTiles.Remove(tile);
-        // Debug.Log("Removed: " + tile.name);
 
-        // Move tile back to its original position in the grid (same logic as before)
+        // Get the index of the tile in the selected tiles list.
+        int tileIndex = selectedTiles.IndexOf(tile);
+
+        // Remove the tile from the selected tiles list.
+        selectedTiles.Remove(tile);
+
+        // If the original position of the tile is known...
         if (originalTilePositions.ContainsKey(tile))
         {
+            // ...move the tile back to its original position in the grid.
             tile.transform.SetParent(transform);
             tile.transform.localPosition = originalTilePositions[tile];
         }
         else
         {
+            // If the original position of the tile is not known, log an error.
             Debug.LogError("Original position not found for tile: " + tile.name);
         }
 
-        // Remove and move all tiles to the right (> index) in selectedTiles
+        // If there are tiles to the right of the deselected tile in the selected tiles list...
         if (tileIndex < selectedTiles.Count)
         {
+            // ...loop over each of these tiles.
             for (int i = tileIndex; i < selectedTiles.Count; i++)
             {
+                // Get the tile to move.
                 GameObject tileToMove = selectedTiles[i];
-                selectedTiles.RemoveAt(i); // Remove from selected list before moving
 
-                // Move tile back to its original position (same logic as before)
+                // Remove the tile from the selected tiles list.
+                selectedTiles.RemoveAt(i);
+
+                // If the original position of the tile is known...
                 if (originalTilePositions.ContainsKey(tileToMove))
                 {
+                    // ...move the tile back to its original position in the grid.
                     tileToMove.transform.SetParent(transform);
                     tileToMove.transform.localPosition = originalTilePositions[tileToMove];
                 }
                 else
                 {
+                    // If the original position of the tile is not known, log an error.
                     Debug.LogError("Original position not found for tile: " + tileToMove.name);
                 }
 
-                // Decrement i by 1 to account for removed item at index i during loop iteration
+                // Decrement i by 1 to account for the removed item at index i during the loop iteration.
                 i--;
             }
         }
 
+        // Check if the selected word is valid.
         CheckWordValidity();
     }
 
+    // Select a tile.
     void SelectTile(GameObject tile)
     {
+        // Play the tile selection sound.
         SoundManager.Instance.PlaySound(audioSource, tileSelectSound);
-        selectedTiles.Add(tile);
-        // Debug.Log("Added: " + tile.name);
 
-        // Move tile to the selected container
+        // Add the tile to the selected tiles list.
+        selectedTiles.Add(tile);
+
+        // Move the tile to the selected container.
         tile.transform.SetParent(selectedContainer.transform);
 
-        // Set initial position based on selectedTiles count
+        // If this is the first tile in the selected tiles list...
         if (selectedTiles.Count == 1)
         {
-            // First selected tile, set position to container"s position
+            // ...set the position of the tile to the position of the selected container.
             tile.transform.localPosition = selectedContainer.transform.position;
         }
         else
         {
-            // Subsequent tiles, position them to the right of the previous tile with spacing
+            // If this is not the first tile in the selected tiles list...
+
+            // Get the previous tile in the selected tiles list.
             int previousTileIndex = selectedTiles.Count - 2;
             GameObject previousTile = selectedTiles[previousTileIndex];
 
-            // Calculate offset based on previous tile position and tile width
-            float xPos = previousTile.transform.localPosition.x; // Replace spacing with your desired spacing
+            // Calculate the x position of the tile based on the position of the previous tile and the tile width.
+            float xPos = previousTile.transform.localPosition.x;
+
+            // Set the position of the tile to the right of the previous tile.
             tile.transform.localPosition = new Vector3(
-                xPos + 1,
-                selectedContainer.transform.position.y,
-                0
-            ); // Assuming only X position needs adjustment
+                xPos + 1, // Add 1 to the x position of the previous tile.
+                selectedContainer.transform.position.y, // The y position is the same as the selected container.
+                0 // The z position is 0.
+            );
         }
 
+        // Check if the selected word is valid.
         CheckWordValidity();
     }
 
+    // Build the selected word from the selected tiles.
     string BuildSeletedWord()
     {
         string selectedWord = "";
@@ -354,33 +541,55 @@ public class LetterGrid : MonoBehaviour
         return selectedWord;
     }
 
+    // Get the selected word
     public string GetSelectedWord()
     {
         return BuildSeletedWord();
     }
 
+    // Check the validity of the selected word.
     void CheckWordValidity()
     {
+        // Build the selected word from the selected tiles, convert it to lower case and trim any leading or trailing whitespace.
         string selectedWord = BuildSeletedWord().ToLower().Trim();
+
+        // Get the color block of the attack button.
         ColorBlock attackButtonCB = attackButton.colors;
 
+        // If the selected word is a valid word according to the WordChecker...
         if (WordChecker.Instance.IsValidWord(selectedWord))
         {
+            // ...play the word valid sound.
             SoundManager.Instance.PlaySound(audioSource, wordValidSound);
+
+            // Log that the word is valid.
             Debug.Log("Valid word: " + selectedWord);
 
+            // Enable the attack button.
             attackButton.enabled = true;
+
+            // Increase the color multiplier of the attack button to make it more visible.
             attackButtonCB.colorMultiplier = 2;
+
+            // Apply the updated color block to the attack button.
             attackButton.colors = attackButtonCB;
         }
         else
         {
+            // If the selected word is not valid...
+
+            // Disable the attack button.
             attackButton.enabled = false;
+
+            // Reset the color multiplier of the attack button.
             attackButtonCB.colorMultiplier = 1;
+
+            // Apply the updated color block to the attack button.
             attackButton.colors = attackButtonCB;
         }
     }
 
+    // Check if the letter grid contains at least one vowel
     bool IsLetterGridValid()
     {
         string letterList = GetLetterList();
@@ -398,49 +607,68 @@ public class LetterGrid : MonoBehaviour
         return hasVowel;
     }
 
+    // Scramble the letters in the grid.
     public void ScrambleLetter()
     {
-        // Remove all the selected tiles
+        // If there are any selected tiles...
         if (selectedTiles.Count != 0)
         {
+            // ...deselect the first tile in the selected tiles list.
             DeselectTile(selectedTiles[0]);
         }
 
-        // Scramble every tiles in the grid
+        // Loop over each tile in the grid.
         foreach (GameObject tile in letterTiles)
         {
+            // Get a random letter and set the text of the tile to this letter.
             tile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
+
+            // Set the name of the tile to the same letter.
             tile.name = tile.GetComponentInChildren<TMP_Text>().text;
         }
 
+        // If the letter grid is valid...
         if (IsLetterGridValid())
         {
+            // ...log the list of letters in the grid.
             Debug.Log("Letter list: " + GetLetterList());
         }
         else
         {
+            // If the letter grid is not valid, scramble the letters again.
             ScrambleLetter();
         }
     }
 
+    // This method resets the selected tiles in the grid.
     public void ResetSelectedTiles()
     {
+        // If there are any selected tiles...
         if (selectedTiles.Count != 0)
         {
+            // ...loop over each selected tile.
             foreach (GameObject tile in selectedTiles)
             {
+                // Get a random letter and set the text of the tile to this letter.
                 tile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
+
+                // Set the name of the tile to the same letter.
                 tile.name = tile.GetComponentInChildren<TMP_Text>().text;
             }
+
+            // Deselect the first tile in the selected tiles list.
             DeselectTile(selectedTiles[0]);
         }
 
+        // If the letter grid is valid...
         if (IsLetterGridValid())
         {
+            // ...log the list of letters in the grid.
             Debug.Log("Letter list: " + GetLetterList());
         }
         else
         {
+            // If the letter grid is not valid, scramble the letters again.
             ScrambleLetter();
         }
     }
