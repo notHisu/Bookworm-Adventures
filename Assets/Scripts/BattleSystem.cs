@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum TURNS
 {
@@ -315,6 +316,8 @@ public class BattleSystem : MonoBehaviour
         // Set the current turn to the player's turn
         SetState(TURNS.PlayerTurn);
 
+        EnableLetterGrid();
+
         // Check if it's currently the player's turn
         if (turn == TURNS.PlayerTurn)
         {
@@ -328,6 +331,9 @@ public class BattleSystem : MonoBehaviour
     {
         // Set the current turn to the enemy's turn
         SetState(TURNS.EnemyTurn);
+
+        // Disable LetterGrid
+        DisableLetterGrid();
 
         // Check if it's currently the enemy's turn
         if (turn == TURNS.EnemyTurn)
@@ -369,5 +375,15 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(processingDelay);
         SetState(TURNS.Victory);
         SceneManager.LoadScene("Victory");
+    }
+
+    void DisableLetterGrid()
+    {
+        LetterGrid.Instance.enabled = false;
+    }
+
+    void EnableLetterGrid()
+    {
+        LetterGrid.Instance.enabled = true;
     }
 }

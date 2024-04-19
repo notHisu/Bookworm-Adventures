@@ -150,6 +150,14 @@ public class UIManager : MonoBehaviour
         if (settingsMenuButton != null)
         {
             settingsPanel.SetActive(!settingsPanel.activeSelf);
+            if(settingsPanel.activeSelf)
+            {
+                LetterGrid.Instance.enabled = false;
+            }
+            else
+            {
+                LetterGrid.Instance.enabled = true;
+            }
         }
     }
 
