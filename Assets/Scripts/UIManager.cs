@@ -44,6 +44,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject settingsPanel;
 
+    // Panel for the about menu
+    [SerializeField]
+    private GameObject aboutPanel;
+
     // Toggles for enabling/disabling music and sound effects
     [SerializeField]
     private Toggle musicToggle;
@@ -157,7 +161,7 @@ public class UIManager : MonoBehaviour
         // If the about button is not null, load the "About" scene after a delay of 0.5 seconds
         if (aboutButton != null)
         {
-            StartCoroutine(LoadSceneAfterSeconds("About", .5f));
+            aboutPanel.SetActive(!aboutPanel.activeSelf);
         }
     }
 
