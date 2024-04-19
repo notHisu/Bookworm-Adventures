@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -110,6 +108,9 @@ public class BattleSystem : MonoBehaviour
     // Coroutine to set up the battle
     IEnumerator Setup()
     {
+        // Reset current score
+        ScoreManager.Instance.ResetScore();
+
         // Set the initial state of the battle to Start
         SetState(TURNS.Start);
 

@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 // Class to manage the game's score
@@ -8,7 +7,7 @@ public class ScoreManager : MonoBehaviour
     private static ScoreManager instance;
 
     // Current score in the game
-    private double currentScore;
+    private double currentScore = 0;
 
     // Best score achieved in the game
     private double bestScore;
@@ -87,5 +86,10 @@ public class ScoreManager : MonoBehaviour
     {
         // Save the best score to PlayerPrefs
         PlayerPrefs.SetFloat("BestScore", (float)bestScore);
+    }
+
+    public void ResetScore()
+    {
+        currentScore = 0;
     }
 }

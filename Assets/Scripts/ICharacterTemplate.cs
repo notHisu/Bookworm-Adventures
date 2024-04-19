@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 // Interface to define a common set of methods for character classes
 public interface ICharacterTemplate
 {
