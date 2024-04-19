@@ -100,4 +100,13 @@ public class Player : MonoBehaviour, ICharacterTemplate
             Destroy(this.gameObject);
         }
     }
+
+    public void Heal()
+    {
+        health += 5;
+        if (health >= maxHealth)
+        {
+            health = maxHealth;
+        }
+    }
 }

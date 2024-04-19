@@ -170,12 +170,13 @@ public class BattleSystem : MonoBehaviour
         // Get the value of the selected word from the LetterGrid
         // The Instance property is used to access the singleton instance of the LetterGrid class
         int wordValue = LetterGrid.Instance.GetSelectedWordValue();
+        int wordLength = LetterGrid.Instance.GetSelectedWord().Length;
 
         // Try to get the damage value for the word value from the damageValues dictionary
-        if (damageValues.TryGetValue(wordValue, out double value))
+        if (damageValues.TryGetValue(wordLength, out double value))
         {
             // If the word value is found in the dictionary, return the corresponding damage value
-            return value;
+            return value + wordValue;
         }
         else
         {
@@ -254,6 +255,9 @@ public class BattleSystem : MonoBehaviour
         {
             StopCoroutine(currentCoroutine);
         }
+
+        // Heal player by 5
+        player.Heal();
 
         // Wait for a delay before creating a new enemy
         yield return new WaitForSeconds(processingDelay);
