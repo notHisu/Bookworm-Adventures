@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 // Class to manage the game's audio
 public class SoundManager : MonoBehaviour
@@ -14,6 +15,10 @@ public class SoundManager : MonoBehaviour
     // Booleans to track if the music and sound effects are on
     private bool musicOn = true;
     private bool sfxOn = true;
+
+    // AudioMixer for controlling the volume
+    [SerializeField]
+    AudioMixer audioMixer;
 
     // Singleton instance of the SoundManager
     private static SoundManager instance;
@@ -111,8 +116,21 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void SetVolume(float volume)
+    public void SetMasterVolume(float volume)
     {
-        Debug.Log(volume);
+        audioMixer.SetFloat("MasterVolume", volume);
+        Debug.Log("Master: " + volume);
     }
+
+    public void SetMusicVolume(float volume)
+    {
+        audioMixer.SetFloat("MusicVolume", volume);
+        Debug.Log("Music: " + volume);
+    }
+    public void SetEffectVolume(float volume)
+    {
+        audioMixer.SetFloat("EffectVolume", volume);
+        Debug.Log("Effect: " + volume);
+    }
+
 }

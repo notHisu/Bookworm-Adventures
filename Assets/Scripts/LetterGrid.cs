@@ -18,6 +18,16 @@ public class LetterGrid : MonoBehaviour
     [SerializeField]
     private GameObject letterTileGold;
 
+    // SerializeField for different types of letter tile sprites
+    [SerializeField]
+    Sprite bronzeTile;
+
+    [SerializeField]
+    Sprite silverTile;
+
+    [SerializeField]
+    Sprite goldTile;
+
     // Size of the grid
     [SerializeField]
     private int gridSize = 4;
@@ -94,6 +104,7 @@ public class LetterGrid : MonoBehaviour
         { 'Z', 2 },
     };
 
+    // Letter pool for better distribution of letters
     private List<string> LetterPool = new List<string>
     {
         "E",
@@ -607,6 +618,42 @@ public class LetterGrid : MonoBehaviour
         return hasVowel;
     }
 
+    // Reset the tile
+    private void ResetTile(GameObject tile)
+    {
+        // Generate a random letter
+        string letter = GetRandomLetter();
+
+        // Get the value of the generated letter
+        double letterValue = GetCharValue(letter);
+
+        // Set the text of the tile to the generated letter
+        tile.GetComponentInChildren<TMP_Text>().text = letter;
+
+        // Set the name of the tile to the generated letter
+        tile.name = letter;
+
+        // Get the SpriteRenderer component of the tile
+        SpriteRenderer spriteRenderer = tile.GetComponentInChildren<SpriteRenderer>();
+
+        // Change the sprite of the tile based on the value of the letter
+        if (letterValue < 1.5f)
+        {
+            // If the letter value is less than 1.5, set the sprite to bronzeTile
+            spriteRenderer.sprite = bronzeTile;
+        }
+        else if (letterValue < 2f)
+        {
+            // If the letter value is less than 2 but not less than 1.5, set the sprite to silverTile
+            spriteRenderer.sprite = silverTile;
+        }
+        else
+        {
+            // If the letter value is 2 or more, set the sprite to goldTile
+            spriteRenderer.sprite = goldTile;
+        }
+    }
+
     // Scramble the letters in the grid.
     public void ScrambleLetter()
     {
@@ -620,11 +667,8 @@ public class LetterGrid : MonoBehaviour
         // Loop over each tile in the grid.
         foreach (GameObject tile in letterTiles)
         {
-            // Get a random letter and set the text of the tile to this letter.
-            tile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
-
-            // Set the name of the tile to the same letter.
-            tile.name = tile.GetComponentInChildren<TMP_Text>().text;
+            // Reset the tile.
+            ResetTile(tile);
         }
 
         // If the letter grid is valid...
@@ -649,11 +693,8 @@ public class LetterGrid : MonoBehaviour
             // ...loop over each selected tile.
             foreach (GameObject tile in selectedTiles)
             {
-                // Get a random letter and set the text of the tile to this letter.
-                tile.GetComponentInChildren<TMP_Text>().text = GetRandomLetter();
-
-                // Set the name of the tile to the same letter.
-                tile.name = tile.GetComponentInChildren<TMP_Text>().text;
+                // Reset the tile.
+                ResetTile(tile);
             }
 
             // Deselect the first tile in the selected tiles list.
