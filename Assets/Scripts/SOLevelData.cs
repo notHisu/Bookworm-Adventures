@@ -1,3 +1,5 @@
+// Not related to OOP design, but still SOLID.
+
 using System.Collections.Generic;
 using UnityEngine;
 

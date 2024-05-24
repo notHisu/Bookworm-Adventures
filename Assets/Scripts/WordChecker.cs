@@ -1,3 +1,5 @@
+// This code is SOLID, no need changes.
+
 using System.Collections.Generic;
 using UnityEngine;
 

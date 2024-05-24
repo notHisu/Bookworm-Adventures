@@ -11,7 +11,7 @@ public enum TURNS
     Processing,
     EnemyTurn,
     Victory,
-    Defeated
+    //Defeated
 }
 
 public class BattleSystem : MonoBehaviour
@@ -366,6 +366,16 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    void DisableLetterGrid()
+    {
+        LetterGrid.Instance.enabled = false;
+    }
+
+    void EnableLetterGrid()
+    {
+        LetterGrid.Instance.enabled = true;
+    }
+
     // Coroutine to handle the end of the game
     IEnumerator EndGame()
     {
@@ -381,13 +391,4 @@ public class BattleSystem : MonoBehaviour
         SceneManager.LoadScene("Victory");
     }
 
-    void DisableLetterGrid()
-    {
-        LetterGrid.Instance.enabled = false;
-    }
-
-    void EnableLetterGrid()
-    {
-        LetterGrid.Instance.enabled = true;
-    }
 }

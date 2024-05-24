@@ -312,7 +312,7 @@ public class LetterGrid : MonoBehaviour
                 newTile.transform.localPosition = new Vector3(col + col * .15f, row + rowSpace, 0);
 
                 // Set the name of the tile to be its text.
-                newTile.name = newTile.GetComponentInChildren<TMP_Text>().text;
+                //newTile.name = newTile.GetComponentInChildren<TMP_Text>().text;
             }
         }
 

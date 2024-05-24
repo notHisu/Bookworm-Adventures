@@ -1,3 +1,5 @@
+// Not related to OOP design, but still SOLID.
+
 using UnityEngine;
 
 // Enum to define the type of the character

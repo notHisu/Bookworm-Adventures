@@ -17,7 +17,7 @@ MonoBehaviour:
   characterDescription: Demo prefab for enemy 4
   health: 8
   maxHealth: 8
-  attackDamage: 4
+  attackDamage: 7
   attackSound: {fileID: 8300000, guid: 9f64a26d80f62e94d9d8451976b8ba15, type: 3}
   gotHitSound: {fileID: 8300000, guid: 8cbd39c33f22b1f4abfc144a9039ccc7, type: 3}
   characterPrefab: {fileID: 7745193934957491941, guid: 43c895948295db048a4f4a301a09a202, type: 3}
