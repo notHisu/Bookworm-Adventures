@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LetterGrid : MonoBehaviour
 {
@@ -210,13 +211,13 @@ public class LetterGrid : MonoBehaviour
     {
         get
         {
-            if (instance == null)
+            if (SceneManager.GetActiveScene().name == "BattleScene" && instance == null)
             {
                 instance = FindObjectOfType<LetterGrid>();
                 if (instance == null)
                 {
                     Debug.LogError("No LetterGrid found in scene. Creating instance.");
-                    instance = new LetterGrid();
+                    //instance = new LetterGrid();
                 }
             }
             return instance;
