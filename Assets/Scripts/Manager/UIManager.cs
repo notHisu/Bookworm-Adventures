@@ -138,19 +138,40 @@ public class UIManager : MonoBehaviour
     // Method called when the settings panel button is clicked
     public void OnSettingsPanelButton()
     {
+        if (SceneManager.GetActiveScene().name == "BattleScene")
+        {
+            // Play the click sound
+            SoundManager.Instance.PlaySound(audioSource, clickSound);
+            // If the settings menu button is not null, toggle the active state of the settings panel
+            if (settingsMenuButton != null)
+            {
+                settingsPanel.SetActive(!settingsPanel.activeSelf);
+                if (settingsPanel.activeSelf)
+                {
+                    letterGrid.enabled = false;
+                }
+                else
+                {
+                    letterGrid.enabled = true;
+                }
+            }
+        }
+    }
+
+    public void OnMainMenuSettingsPanelButton()
+    {
         // Play the click sound
         SoundManager.Instance.PlaySound(audioSource, clickSound);
         // If the settings menu button is not null, toggle the active state of the settings panel
         if (settingsMenuButton != null)
         {
-            settingsPanel.SetActive(!settingsPanel.activeSelf);
             if (settingsPanel.activeSelf)
             {
-                letterGrid.enabled = false;
+                settingsPanel.gameObject.SetActive(false);
             }
             else
             {
-                letterGrid.enabled = true;
+                settingsPanel.gameObject.SetActive(true);
             }
         }
     }
