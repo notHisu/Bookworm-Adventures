@@ -6,12 +6,10 @@ public class Enemy : MonoBehaviour, ICharacterTemplate
     private double maxHealth;
     private double health;
     private double attackDamage;
-    private AudioClip attackSound;
-    private AudioClip gotHitSound;
+    private AudioClip attackSound, gotHitSound;
     private AudioSource audioSource;
     private Animator animator;
-    private string attackAnimation = "Attack";
-    private string gotHitAnimation = "Hit";
+    private string attackAnimation = "Attack", gotHitAnimation = "Hit";
 
     public string GetName()
     {

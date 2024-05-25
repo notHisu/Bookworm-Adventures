@@ -15,6 +15,7 @@ public enum CHARACTER_TYPE
     menuName = "Scriptable Objects/Character Data",
     order = 1
 )]
+
 // Class to store data for a character
 public class SOCharacterData : ScriptableObject
 {

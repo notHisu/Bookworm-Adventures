@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3484,7 +3483,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2111845
+  m_text: 2111846
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67c1bef4b9de8e147b49965c711f5086, type: 2}
   m_sharedMaterial: {fileID: 8010056469695676520, guid: 67c1bef4b9de8e147b49965c711f5086, type: 2}
@@ -6718,6 +6717,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4557d94f68e16459eef5f19fd9d837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingsPanel: {fileID: 577806765}
+  aboutPanel: {fileID: 1116453102}
   startButton: {fileID: 295963076}
   menuButton: {fileID: 0}
   aboutButton: {fileID: 1381947690}
@@ -6726,16 +6727,15 @@ MonoBehaviour:
   backButton: {fileID: 0}
   scrambleButton: {fileID: 0}
   attackButton: {fileID: 0}
-  clickSound: {fileID: 8300000, guid: eea0d20f0c072b74ba966a893f132e07, type: 3}
-  audioSource: {fileID: 1896575019}
-  scrambleSound: {fileID: 0}
-  attackSound: {fileID: 0}
-  currentScoreText: {fileID: 0}
-  bestScoreText: {fileID: 0}
-  settingsPanel: {fileID: 577806765}
-  aboutPanel: {fileID: 1116453102}
   musicToggle: {fileID: 1204312582}
   soundEffectToggle: {fileID: 141153732}
+  currentScoreText: {fileID: 0}
+  bestScoreText: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: eea0d20f0c072b74ba966a893f132e07, type: 3}
+  scrambleSound: {fileID: 0}
+  attackSound: {fileID: 0}
+  audioSource: {fileID: 1896575019}
+  letterGrid: {fileID: 0}
 --- !u!82 &1896575019
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6889,7 +6889,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Nguy\u1EC5n B\u1EA3o Khanh"
+  m_text: "L\xEA Tr\u1EA7n Anh Kh\xF4i"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67c1bef4b9de8e147b49965c711f5086, type: 2}
   m_sharedMaterial: {fileID: 8010056469695676520, guid: 67c1bef4b9de8e147b49965c711f5086, type: 2}

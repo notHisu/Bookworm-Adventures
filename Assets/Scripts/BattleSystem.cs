@@ -48,6 +48,9 @@ public class BattleSystem : MonoBehaviour
     [SerializeField]
     private BattleUIManager battleUIManager;
 
+    [SerializeField]
+    private LetterGrid letterGrid;
+
     // Reference to the EnemySpawner script
     private EnemySpawner enemySpawner;
 
@@ -66,6 +69,9 @@ public class BattleSystem : MonoBehaviour
     private float playerTurnDelay = 1f;
     private float enemyTurnDelay = 2f;
     private float processingDelay = 1f;
+
+    // Bool value to check if the player is currently attacking
+    private bool isAttacking = false;
 
     // Singleton instance of the BattleSystem class
     public static BattleSystem Instance
@@ -169,8 +175,8 @@ public class BattleSystem : MonoBehaviour
     {
         // Get the value of the selected word from the LetterGrid
         // The Instance property is used to access the singleton instance of the LetterGrid class
-        int wordValue = LetterGrid.Instance.GetSelectedWordValue();
-        int wordLength = LetterGrid.Instance.GetSelectedWord().Length;
+        int wordValue = letterGrid.GetSelectedWordValue();
+        int wordLength = letterGrid.GetSelectedWord().Length;
 
         // Try to get the damage value for the word value from the damageValues dictionary
         if (damageValues.TryGetValue(wordLength, out double value))
@@ -189,8 +195,9 @@ public class BattleSystem : MonoBehaviour
     public void OnAttackButton()
     {
         // Check if the damage value of the selected word is greater than 0
-        if (GetWordDamage() > 0)
+        if (!isAttacking && GetWordDamage() > 0)
         {
+            isAttacking = true;
             // Check if it's currently the player's turn
             if (turn == TURNS.PlayerTurn)
             {
@@ -221,6 +228,8 @@ public class BattleSystem : MonoBehaviour
             StopCoroutine(currentCoroutine);
         }
 
+        isAttacking = false;
+
         // Make the enemy take damage equal to the damage value of the selected word plus the player's damage
         enemy.TakeDamage(GetWordDamage() + player.SendDamage());
 
@@ -230,7 +239,7 @@ public class BattleSystem : MonoBehaviour
 
         // Wait for another delay before resetting the selected tiles in the LetterGrid and disabling the UI buttons
         yield return new WaitForSeconds(processingDelay);
-        LetterGrid.Instance.ResetSelectedTiles();
+        letterGrid.ResetSelectedTiles();
         battleUIManager.DisableButtons();
 
         // Check if the enemy still has health left
@@ -299,7 +308,7 @@ public class BattleSystem : MonoBehaviour
             Debug.Log("Scrambleee!");
 
             // Scramble the letters in the LetterGrid
-            LetterGrid.Instance.ScrambleLetter();
+            letterGrid.ScrambleLetter();
 
             // Disable the UI buttons
             battleUIManager.DisableButtons();
@@ -368,12 +377,12 @@ public class BattleSystem : MonoBehaviour
 
     void DisableLetterGrid()
     {
-        LetterGrid.Instance.enabled = false;
+        letterGrid.enabled = false;
     }
 
     void EnableLetterGrid()
     {
-        LetterGrid.Instance.enabled = true;
+        letterGrid.enabled = true;
     }
 
     // Coroutine to handle the end of the game

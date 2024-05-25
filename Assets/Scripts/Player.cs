@@ -3,35 +3,21 @@ using UnityEngine;
 // Class to manage the player's character
 public class Player : MonoBehaviour, ICharacterTemplate
 {
-    // Player's name
-    private string playerName;
+    // Player Information
+    private string playerName; // Player's name
+    private double maxHealth; // Player's maximum health
+    private double health; // Player's current health
+    private double attackDamage; // Player's attack damage
 
-    // Player's maximum health
-    private double maxHealth;
+    // Player Sounds
+    private AudioClip attackSound; // Sound played when the player attacks
+    private AudioClip gotHitSound; // Sound played when the player gets hit
+    private AudioSource audioSource; // AudioSource component of the player
 
-    // Player's current health
-    private double health;
-
-    // Player's attack damage
-    private double attackDamage;
-
-    // Sound played when the player attacks
-    private AudioClip attackSound;
-
-    // Sound played when the player gets hit
-    private AudioClip gotHitSound;
-
-    // AudioSource component of the player
-    private AudioSource audioSource;
-
-    // Animator component of the player
-    private Animator animator;
-
-    // Name of the attack animation
-    private string attackAnimation = "Attack";
-
-    // Name of the got hit animation
-    private string gotHitAnimation = "Hit";
+    // Player Animation
+    private Animator animator; // Animator component of the player
+    private string attackAnimation = "Attack"; // Name of the attack animation
+    private string gotHitAnimation = "Hit"; // Name of the got hit animation
 
     // Method to get the player's name
     public string GetName()

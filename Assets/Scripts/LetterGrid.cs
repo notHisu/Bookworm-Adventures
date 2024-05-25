@@ -6,234 +6,72 @@ using UnityEngine.UI;
 
 public class LetterGrid : MonoBehaviour
 {
-    // SerializeField for different types of letter tiles
-    [SerializeField]
-    private GameObject letterTileBronze;
-
-    [SerializeField]
-    private GameObject letterTileSilver;
-
-    [SerializeField]
-    private GameObject letterTileGold;
-
-    // SerializeField for different types of letter tile sprites
-    [SerializeField]
-    Sprite bronzeTile;
-
-    [SerializeField]
-    Sprite silverTile;
-
-    [SerializeField]
-    Sprite goldTile;
-
-    // Size of the grid
-    [SerializeField]
-    private int gridSize = 4;
-
-    // Background image for the grid
-    [SerializeField]
-    private GameObject backgroundImage;
-
-    // Attack button
-    [SerializeField]
-    private Button attackButton;
-
     // Singleton instance
     private static LetterGrid instance;
 
-    // List of letter tiles
-    private List<GameObject> letterTiles;
-
-    // List of selected tiles
-    private List<GameObject> selectedTiles;
-
-    // GameObject for selected tiles container
-    private GameObject selectedContainer;
-
-    // Dictionary to store original tile positions
-    private Dictionary<GameObject, Vector3> originalTilePositions;
-
-    // Main camera
-    private Camera mainCamera;
-
-    // Audio clip when a tile is selected
+    // Grid Properties
     [SerializeField]
-    private AudioClip tileSelectSound;
-
-    // Audio clip for valid word
+    private int gridSize = 4; // Size of the grid
     [SerializeField]
-    private AudioClip wordValidSound;
+    private GameObject backgroundImage; // Background image for the grid
 
-    // Audio source for playing audio clips
+    // Letter Tiles
     [SerializeField]
-    private AudioSource audioSource;
+    private GameObject letterTileBronze; // Bronze letter tile
+    [SerializeField]
+    private GameObject letterTileSilver; // Silver letter tile
+    [SerializeField]
+    private GameObject letterTileGold; // Gold letter tile
+    private List<GameObject> letterTiles; // List of letter tiles
+
+    // Letter Tile Sprites
+    [SerializeField]
+    private Sprite bronzeTile; // Sprite for bronze tile
+    [SerializeField]
+    private Sprite silverTile; // Sprite for silver tile
+    [SerializeField]
+    private Sprite goldTile; // Sprite for gold tile
+
+    // Selected Tiles
+    private List<GameObject> selectedTiles; // List of selected tiles
+    private GameObject selectedContainer; // GameObject for selected tiles container
+    private Dictionary<GameObject, Vector3> originalTilePositions; // Dictionary to store original tile positions
+
+    // Audio Properties
+    [SerializeField]
+    private AudioClip tileSelectSound; // Audio clip when a tile is selected
+    [SerializeField]
+    private AudioClip wordValidSound; // Audio clip for valid word
+    [SerializeField]
+    private AudioSource audioSource; // Audio source for playing audio clips
+
+    // Other Properties
+    [SerializeField]
+    private Button attackButton; // Attack button
+    private Camera mainCamera; // Main camera
+    [SerializeField]
+    private WordChecker wordChecker; // Word checker
 
     // Dictionary to store letter values
     private Dictionary<char, double> letterValues = new Dictionary<char, double>()
-    {
-        // Bronze value
-        { 'A', 1 },
-        { 'D', 1 },
-        { 'E', 1 },
-        { 'G', 1 },
-        { 'I', 1 },
-        { 'L', 1 },
-        { 'N', 1 },
-        { 'O', 1 },
-        { 'R', 1 },
-        { 'S', 1 },
-        { 'T', 1 },
-        { 'U', 1 },
-        { 'B', 1.25 },
-        { 'C', 1.25 },
-        { 'F', 1.25 },
-        { 'H', 1.25 },
-        { 'M', 1.25 },
-        { 'P', 1.25 },
-        // Silver value
-        { 'V', 1.5 },
-        { 'W', 1.5 },
-        { 'Y', 1.5 },
-        { 'J', 1.75 },
-        { 'K', 1.75 },
-        { 'Q', 1.75 },
-        //Gold value
-        { 'X', 2 },
-        { 'Z', 2 },
-    };
+{
+    // Bronze value
+    { 'A', 1 }, { 'D', 1 }, { 'E', 1 }, { 'G', 1 }, { 'I', 1 }, { 'L', 1 }, { 'N', 1 }, { 'O', 1 }, { 'R', 1 }, { 'S', 1 }, { 'T', 1 }, { 'U', 1 },
+    { 'B', 1.25 }, { 'C', 1.25 }, { 'F', 1.25 }, { 'H', 1.25 }, { 'M', 1.25 }, { 'P', 1.25 },
+    // Silver value
+    { 'V', 1.5 }, { 'W', 1.5 }, { 'Y', 1.5 }, { 'J', 1.75 }, { 'K', 1.75 }, { 'Q', 1.75 },
+    //Gold value
+    { 'X', 2 }, { 'Z', 2 },
+};
 
     // Letter pool for better distribution of letters
     private List<string> LetterPool = new List<string>
-    {
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "E",
-        "A",
-        "A",
-        "A",
-        "A",
-        "A",
-        "A",
-        "A",
-        "A",
-        "A",
-        "I",
-        "I",
-        "I",
-        "I",
-        "I",
-        "I",
-        "I",
-        "I",
-        "I",
-        "O",
-        "O",
-        "O",
-        "O",
-        "O",
-        "O",
-        "O",
-        "O",
-        "N",
-        "N",
-        "N",
-        "N",
-        "N",
-        "N",
-        "N",
-        "N",
-        "R",
-        "R",
-        "R",
-        "R",
-        "R",
-        "R",
-        "R",
-        "T",
-        "T",
-        "T",
-        "T",
-        "T",
-        "T",
-        "L",
-        "L",
-        "L",
-        "L",
-        "S",
-        "S",
-        "S",
-        "S",
-        "U",
-        "U",
-        "U",
-        "D",
-        "D",
-        "D",
-        "G",
-        "G",
-        "B",
-        "B",
-        "C",
-        "C",
-        "M",
-        "M",
-        "P",
-        "P",
-        "F",
-        "F",
-        "H",
-        "H",
-        "V",
-        "V",
-        "W",
-        "W",
-        "Y",
-        "Y",
-        "K",
-        "J",
-        "X",
-        "Q",
-        "Z"
-    };
-
-    // Get the instance of the LetterGrid
-    public static LetterGrid Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<LetterGrid>();
-                if (instance == null)
-                {
-                    Debug.LogError("No LetterGrid found in scene. Creating instance.");
-                    instance = new LetterGrid();
-                }
-            }
-            return instance;
-        }
-    }
-
-    // Awake is called when the script instance is being loaded
-    void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            DestroyImmediate(gameObject); // Destroy duplicate if it exists
-            return;
-        }
-
-        instance = this;
-    }
+{
+    "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "A", "A", "A", "A", "A", "A", "A", "A", "A", "I", "I", "I", "I", "I", "I", "I", "I", "I",
+    "O", "O", "O", "O", "O", "O", "O", "O", "N", "N", "N", "N", "N", "N", "N", "N", "R", "R", "R", "R", "R", "R", "R", "T", "T", "T", "T", "T", "T",
+    "L", "L", "L", "L", "S", "S", "S", "S", "U", "U", "U", "D", "D", "D", "G", "G", "B", "B", "C", "C", "M", "M", "P", "P", "F", "F", "H", "H", "V", "V",
+    "W", "W", "Y", "Y", "K", "J", "X", "Q", "Z"
+};
 
     // Start is called before the first frame update
     void Start()
@@ -418,7 +256,7 @@ public class LetterGrid : MonoBehaviour
 
         if (selectedWord.Length > 0)
         {
-            if (WordChecker.Instance.IsValidWord(selectedWord))
+            if (wordChecker.IsValidWord(selectedWord))
             {
                 return GetWordValue(selectedWord);
             }
@@ -566,7 +404,7 @@ public class LetterGrid : MonoBehaviour
         ColorBlock attackButtonCB = attackButton.colors;
 
         // If the selected word is a valid word according to the WordChecker...
-        if (WordChecker.Instance.IsValidWord(selectedWord))
+        if (wordChecker.IsValidWord(selectedWord))
         {
             // ...play the word valid sound.
             SoundManager.Instance.PlaySound(audioSource, wordValidSound);

@@ -9,7 +9,12 @@ public class UIManager : MonoBehaviour
     // Singleton instance of the UIManager
     private static UIManager instance;
 
-    // Buttons in the UI
+    // UI Panels
+    [SerializeField]
+    private GameObject settingsPanel, // Panel for the settings menu
+        aboutPanel; // Panel for the about menu
+
+    // UI Buttons
     [SerializeField]
     private Button startButton, // Button to start the game
         menuButton, // Button to open the menu
@@ -20,40 +25,29 @@ public class UIManager : MonoBehaviour
         scrambleButton, // Button to scramble letters in the game
         attackButton; // Button to attack in the game
 
-    // Sound to play when a button is clicked
+    // UI Toggles
     [SerializeField]
-    private AudioClip clickSound;
+    private Toggle musicToggle, // Toggle for enabling/disabling music
+        soundEffectToggle; // Toggle for enabling/disabling sound effects
 
-    // AudioSource to play sounds
+    // UI Text Elements
     [SerializeField]
-    private AudioSource audioSource;
+    private TMP_Text currentScoreText, // Text element to display the current score
+        bestScoreText; // Text element to display the best score
 
-    // Sounds to play when scramble and attack actions are performed
+    // Audio Clips
     [SerializeField]
-    private AudioClip scrambleSound;
+    private AudioClip clickSound, // Sound to play when a button is clicked
+        scrambleSound, // Sound to play when scramble action is performed
+        attackSound; // Sound to play when attack action is performed
 
+    // Audio Source
     [SerializeField]
-    private AudioClip attackSound;
+    private AudioSource audioSource; // AudioSource to play sounds
 
-    // Text elements to display the current and best scores
+    // Letter Grid
     [SerializeField]
-    private TMP_Text currentScoreText,
-        bestScoreText;
-
-    // Panel for the settings menu
-    [SerializeField]
-    private GameObject settingsPanel;
-
-    // Panel for the about menu
-    [SerializeField]
-    private GameObject aboutPanel;
-
-    // Toggles for enabling/disabling music and sound effects
-    [SerializeField]
-    private Toggle musicToggle;
-
-    [SerializeField]
-    private Toggle soundEffectToggle;
+    private LetterGrid letterGrid; // The letter grid in the game
 
     // Singleton instance of the UIManager
     public static UIManager Instance
@@ -150,13 +144,13 @@ public class UIManager : MonoBehaviour
         if (settingsMenuButton != null)
         {
             settingsPanel.SetActive(!settingsPanel.activeSelf);
-            if(settingsPanel.activeSelf)
+            if (settingsPanel.activeSelf)
             {
-                LetterGrid.Instance.enabled = false;
+                letterGrid.enabled = false;
             }
             else
             {
-                LetterGrid.Instance.enabled = true;
+                letterGrid.enabled = true;
             }
         }
     }

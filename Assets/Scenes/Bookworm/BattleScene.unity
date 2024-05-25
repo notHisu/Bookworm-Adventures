@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3088,6 +3087,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4557d94f68e16459eef5f19fd9d837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingsPanel: {fileID: 372471378}
+  aboutPanel: {fileID: 0}
   startButton: {fileID: 0}
   menuButton: {fileID: 2095173990}
   aboutButton: {fileID: 0}
@@ -3096,16 +3097,15 @@ MonoBehaviour:
   backButton: {fileID: 0}
   scrambleButton: {fileID: 152341961}
   attackButton: {fileID: 513236853}
-  clickSound: {fileID: 8300000, guid: eea0d20f0c072b74ba966a893f132e07, type: 3}
-  audioSource: {fileID: 1073435734}
-  scrambleSound: {fileID: 8300000, guid: 83622913a6367254dbffdfedeffbcc07, type: 3}
-  attackSound: {fileID: 8300000, guid: 3cbf5a8d16046ea4b80507bd6682b855, type: 3}
-  currentScoreText: {fileID: 0}
-  bestScoreText: {fileID: 0}
-  settingsPanel: {fileID: 372471378}
-  aboutPanel: {fileID: 0}
   musicToggle: {fileID: 1230723471}
   soundEffectToggle: {fileID: 640797755}
+  currentScoreText: {fileID: 0}
+  bestScoreText: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: eea0d20f0c072b74ba966a893f132e07, type: 3}
+  scrambleSound: {fileID: 8300000, guid: 83622913a6367254dbffdfedeffbcc07, type: 3}
+  attackSound: {fileID: 8300000, guid: 3cbf5a8d16046ea4b80507bd6682b855, type: 3}
+  audioSource: {fileID: 1073435734}
+  letterGrid: {fileID: 1255569354}
 --- !u!82 &1073435734
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3619,6 +3619,7 @@ MonoBehaviour:
   tileSelectSound: {fileID: 8300000, guid: cd6520f1f63c9bb4b959519bae4241a7, type: 3}
   wordValidSound: {fileID: 8300000, guid: b9928d49560ac3e41983a01887f08d56, type: 3}
   audioSource: {fileID: 1255569356}
+  wordChecker: {fileID: 542552571}
 --- !u!4 &1255569355
 Transform:
   m_ObjectHideFlags: 0
@@ -4700,6 +4701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9637a0d39bc568c43a8b83b6ee6b0f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelName: Level1
 --- !u!4 &1655541396
 Transform:
   m_ObjectHideFlags: 0
@@ -4917,6 +4919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turn: 0
   battleUIManager: {fileID: 1073435732}
+  letterGrid: {fileID: 1255569354}
 --- !u!4 &1842998438
 Transform:
   m_ObjectHideFlags: 0

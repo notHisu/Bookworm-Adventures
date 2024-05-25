@@ -5,29 +5,25 @@ using UnityEngine.UI;
 // Class to manage the UI in a battle scene
 public class BattleUIManager : MonoBehaviour
 {
-    // Private variables to hold the player and enemy
+    // Player related variables
     private Player player;
-    private Enemy enemy;
-
-    // Public variables for the player and enemy names, and the turn indicator
     public TMP_Text playerName;
-    public TMP_Text enemyName;
-    public TMP_Text turnIndicator;
-
-    // Public variables for the player and enemy health bars
     public Slider playerHP;
-    public Slider enemyHP;
-
-    // Private variables for the attack and scramble buttons
     [SerializeField]
     private Button attackButton;
 
-    [SerializeField]
-    private Button scrambleButton;
+    // Enemy related variables
+    private Enemy enemy;
+    public TMP_Text enemyName;
+    public Slider enemyHP;
 
-    // Private variable for the current score
+    // Game state related variables
+    [SerializeField]
+    private TMP_Text turnIndicator;
     [SerializeField]
     private TMP_Text currentScore;
+    [SerializeField]
+    private Button scrambleButton;
 
     // Method to set up the player and enemy info in the UI
     public void SetUpCharacterInfo()
