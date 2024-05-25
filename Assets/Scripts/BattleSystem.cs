@@ -14,10 +14,25 @@ public enum TURNS
     //Defeated
 }
 
-public class BattleSystem : MonoBehaviour
+public sealed class BattleSystem : MonoBehaviour
 {
-    // Singleton instance of the BattleSytem class
-    private static BattleSystem instance;
+    private BattleSystem()
+    {
+
+    }
+
+    public static BattleSystem Instance { get { return Nested.instance; } }
+
+    private class Nested
+    {
+        // Explicit static constructor to tell C# compiler
+        // not to mark type as beforefieldinit
+        static Nested()
+        {
+        }
+
+        internal static readonly BattleSystem instance = new();
+    }
 
     // Dictionary to store the damage values of each word length
     private Dictionary<int, double> damageValues = new Dictionary<int, double>()
@@ -74,34 +89,6 @@ public class BattleSystem : MonoBehaviour
     private bool isAttacking = false;
 
     // Singleton instance of the BattleSystem class
-    public static BattleSystem Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<BattleSystem>();
-                if (instance == null)
-                {
-                    Debug.LogError("No BattleSystem found in scene. Creating instance.");
-                    instance = new BattleSystem();
-                }
-            }
-            return instance;
-        }
-    }
-
-    // Awake method to create the singleton instance
-    void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            DestroyImmediate(gameObject); // Destroy duplicate if it exists
-            return;
-        }
-
-        instance = this;
-    }
 
     private void Start()
     {
