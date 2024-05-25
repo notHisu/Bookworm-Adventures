@@ -85,8 +85,8 @@ public class UIManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Victory")
         {
             // If it is, set the current score and best score texts to the current and best scores from the ScoreManager
-            currentScoreText.text = $"YOUR SCORE:\n{GameManager.Instance.GetCurrentScore()}";
-            bestScoreText.text = $"BEST SCORE: {GameManager.Instance.GetBestScore()}";
+            currentScoreText.text = $"YOUR SCORE:\n{GameManagerSingleton.Instance.GetCurrentScore()}";
+            bestScoreText.text = $"BEST SCORE: {GameManagerSingleton.Instance.GetBestScore()}";
         }
 
         // Check if the music and sound effect toggles are not null

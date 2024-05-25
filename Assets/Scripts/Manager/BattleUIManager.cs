@@ -58,7 +58,7 @@ public class BattleUIManager : MonoBehaviour
         // Update the player and enemy health bars and the current score
         playerHP.value = (float)player.GetHealth();
         enemyHP.value = (float)enemy.GetHealth();
-        currentScore.text = GameManager.Instance.GetCurrentScore().ToString();
+        currentScore.text = GameManagerSingleton.Instance.GetCurrentScore().ToString();
     }
 
     // Method to disable the attack and scramble buttons
