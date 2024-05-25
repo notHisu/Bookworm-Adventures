@@ -1,10 +1,10 @@
 using UnityEngine;
 
 // Class to manage the game's score
-public class ScoreManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    // Singleton instance of the ScoreManager
-    private static ScoreManager instance;
+    // Singleton instance of the GameManager
+    private static GameManager instance;
 
     // Current score in the game
     private double currentScore = 0;
@@ -12,19 +12,19 @@ public class ScoreManager : MonoBehaviour
     // Best score achieved in the game
     private double bestScore;
 
-    // Property to get the singleton instance of the ScoreManager
-    public static ScoreManager Instance
+    // Property to get the singleton instance of the GameManager
+    public static GameManager Instance
     {
         get
         {
-            // If the instance is null, find the ScoreManager in the scene or create a new one
+            // If the instance is null, find the GameManager in the scene or create a new one
             if (instance == null)
             {
-                instance = FindObjectOfType<ScoreManager>();
+                instance = FindObjectOfType<GameManager>();
                 if (instance == null)
                 {
                     Debug.LogError("No ScoreManager found in scene. Creating instance.");
-                    instance = new ScoreManager();
+                    instance = new GameManager();
                 }
             }
             return instance;

@@ -116,7 +116,7 @@ public class BattleSystem : MonoBehaviour
     IEnumerator Setup()
     {
         // Reset current score
-        ScoreManager.Instance.ResetScore();
+        GameManager.Instance.ResetScore();
 
         // Set the initial state of the battle to Start
         SetState(TURNS.Start);
@@ -202,7 +202,7 @@ public class BattleSystem : MonoBehaviour
             if (turn == TURNS.PlayerTurn)
             {
                 // Add the damage value of the selected word to the player's score
-                ScoreManager.Instance.AddScore(GetWordDamage());
+                GameManager.Instance.AddScore(GetWordDamage());
 
                 // Log the damage value of the selected word
                 Debug.Log("Word damage: " + GetWordDamage());

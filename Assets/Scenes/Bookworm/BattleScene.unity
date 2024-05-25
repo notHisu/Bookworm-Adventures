@@ -970,7 +970,7 @@ GameObject:
   - component: {fileID: 385406358}
   - component: {fileID: 385406357}
   m_Layer: 0
-  m_Name: ScoreManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -988,6 +988,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f90a95701912c419bbe0f9fc188300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScore: 0
+  bestScore: 0
 --- !u!4 &385406358
 Transform:
   m_ObjectHideFlags: 0
@@ -3068,13 +3070,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: {fileID: 461639318}
-  enemyName: {fileID: 806186829}
-  turnIndicator: {fileID: 799912805}
   playerHP: {fileID: 1208486090}
-  enemyHP: {fileID: 749464389}
   attackButton: {fileID: 513236853}
-  scrambleButton: {fileID: 152341961}
+  enemyName: {fileID: 806186829}
+  enemyHP: {fileID: 749464389}
+  turnIndicator: {fileID: 799912805}
   currentScore: {fileID: 434315033}
+  scrambleButton: {fileID: 152341961}
 --- !u!114 &1073435733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3607,18 +3609,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0936a74e49ffe7b49af38178f2713cbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSize: 4
+  backgroundImage: {fileID: 345172160}
   letterTileBronze: {fileID: 1075668361534980305, guid: 0cfc9566c2cbef74bb04d3840d9bead8, type: 3}
   letterTileSilver: {fileID: 2079755321889278722, guid: da19a1c7632ebe6458d6d298a583aab8, type: 3}
   letterTileGold: {fileID: 4967412258662985644, guid: 99eb29d8add067a4c837cddcf328f719, type: 3}
   bronzeTile: {fileID: 21300000, guid: 802bbf8971ba8634b8a6dc40f83cd5ee, type: 3}
   silverTile: {fileID: 21300000, guid: 75a9334c6cdb28c4ab2f0ddbf68009ed, type: 3}
   goldTile: {fileID: 21300000, guid: 58297a6e505bbd74996b43725d1f8088, type: 3}
-  gridSize: 4
-  backgroundImage: {fileID: 345172160}
-  attackButton: {fileID: 513236853}
   tileSelectSound: {fileID: 8300000, guid: cd6520f1f63c9bb4b959519bae4241a7, type: 3}
   wordValidSound: {fileID: 8300000, guid: b9928d49560ac3e41983a01887f08d56, type: 3}
   audioSource: {fileID: 1255569356}
+  attackButton: {fileID: 513236853}
   wordChecker: {fileID: 542552571}
 --- !u!4 &1255569355
 Transform:
