@@ -14,26 +14,8 @@ public enum TURNS
     //Defeated
 }
 
-public sealed class BattleSystem : MonoBehaviour
+public class BattleSystem : MonoBehaviour
 {
-    private BattleSystem()
-    {
-
-    }
-
-    public static BattleSystem Instance { get { return Nested.instance; } }
-
-    private class Nested
-    {
-        // Explicit static constructor to tell C# compiler
-        // not to mark type as beforefieldinit
-        static Nested()
-        {
-        }
-
-        internal static readonly BattleSystem instance = new();
-    }
-
     // Dictionary to store the damage values of each word length
     private Dictionary<int, double> damageValues = new Dictionary<int, double>()
     {
